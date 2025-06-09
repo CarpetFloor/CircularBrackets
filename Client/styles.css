@@ -1,0 +1,26 @@
+.header {
+	position: fixed;
+	margin: 0;
+	width: 95vw;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+.header .mainButton {
+	width: fit-content;
+}
+.header .popup {
+	display: none;
+	background-color: grey;
+}
+.header .popup .enterInfo {
+	display: none;
+	flex-direction: column;
+}
+.header .popup .enterInfo input {
+	margin-bottom: 0.5em;
+}
+
+.main {
+	padding-top: 1vh;
+}

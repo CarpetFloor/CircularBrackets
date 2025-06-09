@@ -1,18 +1,21 @@
--User account creation, including:
-	>Password encryption
-	>Server-side checking for that requested username doesn't already exist
--User login/ logout
--Server-side enter playoff teams and playoff game results
--Only allow users to create bracket until certain date, and:
-	>Display time left
--Client-side requests to server to grab team IDs, and:
-	>Grab team details from team IDs
--Front-end page system for:
-	>Not logged-in page (maybe show brackets leaderboard)
-	>Logged-in home page (leaderboard with users' brackets)
-	>Logged-in create bracket page
--User create bracket
--User view leaderboard with all brackets
--Client-side request when loading logged-in home for server to check if player brackets need to be updated
--Website UI and UX to actually look and feel complete
--Mobile responsiveness (or maybe just do mobile-first design to start with)
+[]User account creation, including:
+	[]Password encryption
+	[+]Server-side checking for that requested username doesn't already exist
+[]User login/ logout
+[]Server-side enter playoff teams and playoff game results
+[]Only allow users to create bracket until certain date, and:
+	[]Display time left
+[]Client-side requests to server to grab team IDs, and:
+	[]Grab team details from team IDs
+[]Front[]end page system for:
+	[]Not logged-in page (maybe show brackets leaderboard)
+	[]Logged-in home page (leaderboard with users' brackets)
+	[]Logged-in create bracket page
+[]User create bracket
+[]User view leaderboard with all brackets
+[]Client-side request when loading logged-in home for server to check if player brackets need to be updated
+[]Website UI and UX to actually look and feel complete
+[]Make sure everything looks good on computers
+[]HTTPS
+[]Hosting
+[]Domain
