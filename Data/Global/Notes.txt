@@ -1,0 +1,7 @@
+Games always go geographically from left to right:
+-West
+-South
+-Central
+-East
+
+Teams are referred to by id everywhere for everything

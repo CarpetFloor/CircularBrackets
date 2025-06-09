@@ -1,0 +1,25 @@
+{
+	"username": "SampleUser", 
+	"password": "encryptedPass", 
+	"bracket": {
+		"round1": [
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}
+		], 
+		"round2": [
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}
+		], 
+		"round3": [
+			{"prediction": "", "correct": null}, 
+			{"prediction": "", "correct": null}
+		], 
+		"round4": [
+			{"prediction": "", "correct": null}
+		]
+	}
+}

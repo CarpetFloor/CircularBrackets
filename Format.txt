@@ -1,0 +1,18 @@
+Round 1: (10pts)
+2, 3 west
+2, 3 south
+2, 3 east
+2, 3 central
+
+Round 2: (20pts)
+(r. 1) winner, 1 west
+(r. 1) winner, 1 south
+(r. 1) winner, 1 east
+(r. 1) winner, 1 central
+
+Round 3: (40pts)
+west, south
+east, central
+
+Round 4: (80pts)
+finals
