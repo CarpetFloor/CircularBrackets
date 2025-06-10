@@ -9,6 +9,12 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
+// add static files
+app.use(express.static(__dirname + "/Client"));
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/index.html");
+});
+
 const keyFile = fs.readFileSync("Data/key.txt", "utf8");
 const key = Buffer.from(keyFile, "hex");
 const algorithm = "aes-256-cbc";
@@ -30,7 +36,7 @@ function encrypt(text) {
 }
 
 function decrypt(text) {
-    let iv = buffer.from(text.iv, "hex");
+    let iv = Buffer.from(text.iv, "hex");
     let encryptedText = Buffer.from(text.encryptedData, "hex");
     let decipher = crypto.createDecipheriv(
         algorithm, 
@@ -42,12 +48,6 @@ function decrypt(text) {
     
     return decrypted.toString();
 }
-
-// add static files
-app.use(express.static(__dirname + "/Client"));
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/index.html");
-});
 
 const validationSettings = {
     username: {
@@ -95,40 +95,43 @@ function validateSignup(username, password) {
     return {result: true, reason: ""};
 }
 
-function checkForUsernameTaken(username) {
-    try {
-        const isFile = (fileName) => {
-            return fs.lstatSync(fileName).isFile();
-        };
-        
-        const directory = path.join(__dirname, "/Data/User");
+function checkForUsernameNotTaken(username, callback) {
+    const isFile = (fileName) => {
+        return fs.lstatSync(fileName).isFile();
+    };
+    
+    const directory = path.join(__dirname, "/Data/User");
 
-        const existingUsers = fs.readdirSync(directory)
-            .map(fileName => {
+    fs.readdir(
+        directory, 
+        (error, files) => {
+            if(error) {
+                console.log((new Date()).toString());
+                console.log("\tERROR checking for username taken:");
+                console.log(`\t${error.message}`);
+
+                callback({result: false, reason: "server error"});
+            }
+
+            const existingUsers = files.map(fileName => {
                 return path.join(directory, fileName);
             })
-            .filter(isFile)
-            .map(file => {
-                const split = file.split("\\");
-                const fileName = split.at(-1);
+                .filter(isFile)
+                .map(file => {
+                    const split = file.split("\\");
+                    const fileName = split.at(-1);
 
-                return (fileName.split(".json")).at(0);
-            })
-        ;
+                    return (fileName.split(".json")).at(0);
+                })
+            ;
 
-        if(existingUsers.includes(username)) {
-            return {result: false, reason: "username taken"};
-        }
+            if(existingUsers.includes(username)) {
+                callback({result: false, reason: "username taken"});
+                return;
+            }
 
-        return {result: true, reason: ""};
-    }
-    catch(error) {
-        console.log((new Date()).toString());
-        console.log("\tERROR checking for username taken:");
-        console.log(`\t${error.message}`);
-
-        return {result: false, reason: "server error"};
-    }
+            callback({result: true, reason: ""});
+    });
 }
 
 function createAccount(usernameInput, passwordInput, socket) {
@@ -168,14 +171,68 @@ io.on("connection", (socket) => {
             return;
         }
 
-        const usernameTakenCheck = checkForUsernameTaken(inputs.username);
-        if(!(usernameTakenCheck.result)) {
-            socket.emit("signup failed", usernameTakenCheck.reason);
-            return;
-        }
+        const usernameNotTakenCheck = checkForUsernameNotTaken(
+            inputs.username, 
+            (returned) => {
+                if(!(returned.result)) {
+                    socket.emit(
+                        "signup failed", 
+                        returned.reason
+                    );
 
-        createAccount(inputs.username, inputs.password, socket);
-    })
+                    return;
+                }
+
+                createAccount(
+                    inputs.username, 
+                    inputs.password, 
+                    socket
+                );
+            }
+        );
+    });
+
+    socket.on("request login", (inputs) => {
+        checkForUsernameNotTaken(
+            inputs.username, 
+            (returned) => {
+                if(returned.result) {
+                    socket.emit("login failed", "account doesn't exist");
+                    return;
+                }
+                else if(
+                    !(returned.result) && 
+                    (returned.reason == "username taken")
+                ) {
+                    fs.readFile(`Data/User/${inputs.username}.json`, (error, file) => {
+                        if(error) {
+                            console.log((new Date()).toString());
+                            console.log("\tERROR logging in:");
+                            console.log(`\t${error.message}`);
+
+                            socket.emit("login failed", "server error");
+                            return;
+                        }
+
+                        const fileData = JSON.parse(file);
+                        const passwordCheck = fileData.password;
+                        const decrypted = decrypt(passwordCheck);
+
+                        if(decrypted == inputs.password) {
+                            socket.emit("login success");
+                        }
+                        else {
+                            socket.emit("login failed", "incorrect password");
+                        }
+                    });
+                }
+                else {
+                    socket.emit("login failed", returned.reason);
+                    return;
+                }
+            }
+        );
+    });
 });
 
 // start server

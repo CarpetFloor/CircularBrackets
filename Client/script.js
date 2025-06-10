@@ -23,6 +23,8 @@ window.onload = () => {
 
 	signupButton.addEventListener("click", () => {
 		buttons.style.display = "none";
+		loginInputs.style.display = "none";
+
 		signupInputs.style.display = "flex";
 	});
 
@@ -41,7 +43,36 @@ window.onload = () => {
 		window.alert(`Signup failed: ${reason}`);
 	});
 
-	socket.on("signup success", (reason) => {
+	socket.on("signup success", () => {
 		window.alert("Successfully created account!");
+	});
+
+	const loginButton = document.querySelector("#loginButton");
+	const loginInputs = document.querySelector(".loginInputs");
+
+	loginButton.addEventListener("click", () => {
+		buttons.style.display = "none";
+		signupInputs.style.display = "none";
+
+		loginInputs.style.display = "flex";
+	});
+
+	const requestLogin = document.querySelector("#requestLogin");
+	requestLogin.addEventListener("click", () => {
+		const usernameEntered = document.querySelector("#loginUsername").value;
+		const passwordEntered = document.querySelector("#loginPassword").value;
+		
+		socket.emit("request login", {
+			username: usernameEntered, 
+			password: passwordEntered
+		});
+	});
+
+	socket.on("login failed", (reason) => {
+		window.alert(`Login failed: ${reason}`);
+	});
+
+	socket.on("login success", () => {
+		window.alert("Successfully logged into account!");
 	});
 }

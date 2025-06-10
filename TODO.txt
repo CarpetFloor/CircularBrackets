@@ -1,7 +1,9 @@
-[]User account creation, including:
-	[]Password encryption
+[+]User account creation, including:
+	[+]Password encryption
 	[+]Server-side checking for that requested username doesn't already exist
-[]User login/ logout
+[+]User login
+[]User logout
+[]Use platform-universal version of file.split("\\")
 []Server-side enter playoff teams and playoff game results
 []Only allow users to create bracket until certain date, and:
 	[]Display time left
