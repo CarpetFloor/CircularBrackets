@@ -7,6 +7,41 @@ const io = new Server(server);
 
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
+
+const keyFile = fs.readFileSync("Data/key.txt", "utf8");
+const key = Buffer.from(keyFile, "hex");
+const algorithm = "aes-256-cbc";
+const iv = crypto.randomBytes(16);
+
+function encrypt(text) {
+    let cipher = crypto.createCipheriv(
+        algorithm, 
+        Buffer.from(key), 
+        iv
+    );
+    let encrypted = cipher.update(text);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    
+    return {
+        iv: iv.toString("hex"), 
+        encryptedData: encrypted.toString("hex")
+    };
+}
+
+function decrypt(text) {
+    let iv = buffer.from(text.iv, "hex");
+    let encryptedText = Buffer.from(text.encryptedData, "hex");
+    let decipher = crypto.createDecipheriv(
+        algorithm, 
+        Buffer.from(key), 
+        iv
+    );
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    
+    return decrypted.toString();
+}
 
 // add static files
 app.use(express.static(__dirname + "/Client"));
@@ -99,7 +134,7 @@ function checkForUsernameTaken(username) {
 function createAccount(usernameInput, passwordInput, socket) {
     const fileData = {
         username: usernameInput, 
-        password: passwordInput, 
+        password: encrypt(passwordInput), 
         bracket: null
     };
     const file = JSON.stringify(fileData);
