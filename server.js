@@ -118,12 +118,15 @@ function checkForUsernameNotTaken(username, callback) {
             })
                 .filter(isFile)
                 .map(file => {
-                    const split = file.split("\\");
-                    const fileName = split.at(-1);
-
-                    return (fileName.split(".json")).at(0);
+                    const baseName = path.basename(file);
+                    return path.parse(baseName).name;
                 })
             ;
+
+            if(existingUsers.length > 50) {
+                callback({result: false, reason: "too many users"});
+                return;
+            }
 
             if(existingUsers.includes(username)) {
                 callback({result: false, reason: "username taken"});
