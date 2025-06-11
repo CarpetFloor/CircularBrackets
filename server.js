@@ -122,6 +122,13 @@ async function isFile(filePath) {
 async function checkForUsernameNotTaken(username) {
     const directory = path.join(__dirname, "/Data/User");
 
+    if(
+        (username === undefined) || 
+        (username === null)
+    ) {
+        return {result: false, reason: "invalid username"};
+    }
+
     try {
         const files = await fs.readdir(directory);
 
@@ -138,12 +145,10 @@ async function checkForUsernameNotTaken(username) {
 
         if(existingUsers.length > 50) {
             return {result: false, reason: "too many users"};
-            return;
         }
 
         if(existingUsers.includes(username)) {
             return {result: false, reason: "username taken"};
-            return;
         }
 
         return {result: true, reason: ""};
@@ -254,8 +259,33 @@ async function handleRequestLogin(socket, inputs) {
     }
 }
 
+async function handleCheckLoggedIn(localStorageValue, socket) {
+    if(localStorageValue === null) {
+        socket.emit("not logged in");
+        return;
+    }
+
+    const usernameNotTakenCheck = await checkForUsernameNotTaken(
+        localStorageValue
+    );
+
+    if(
+        !(usernameNotTakenCheck.result) && 
+        (usernameNotTakenCheck.reason == "username taken")
+    ) {
+        socket.emit("logged in");
+        return;
+    }
+
+    socket.emit("not logged in");
+}
+
 // handle users
 io.on("connection", (socket) => {
+    socket.on("check logged in", (localStorageValue) => {
+        handleCheckLoggedIn(localStorageValue, socket);
+    });
+
     socket.on("request signup", (inputs) => {
         handleRequestSignup(socket, inputs);
     });

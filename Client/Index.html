@@ -10,35 +10,10 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <div class="header">
-        <button class="mainButton">Hi</button>
-
-        <div class="popup">
-            <div class="buttons">
-                <button id="loginButton">Login</button>
-                <button id="signupButton">Signup</button>
-            </div>
-
-            <div class="enterInfo signupInputs">
-                <input id="signupUsername" type="text" placeholder="username">
-                <input id="signupPassword" type="password" placeholder="password">
-
-                <button id="requestSignup">Signup!</button>
-            </div>
-
-            <div class="enterInfo loginInputs">
-                <input id="loginUsername" type="text" placeholder="username">
-                <input id="loginPassword" type="password" placeholder="password">
-
-                <button id="requestLogin">Login!</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="main">
-        <h1>Circular Brackets</h1>
-    </div>
+    <div id="mainContent"></div>
 
     <script src="script.js"></script>
+
+    <div id="loadedScripts"></div>
 </body>
 </html>
