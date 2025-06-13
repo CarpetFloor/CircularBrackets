@@ -1,21 +1,76 @@
 {
 	"round1": [
-		"", 
-		"", 
-		"", 
-		""
+		{
+			"name": "west", 
+			"team1": "", 
+			"team2": "", 
+			"team1Win": null
+		}, 
+		{
+			"name": "south", 
+			"team1": "", 
+			"team2": "", 
+			"team1Win": null
+		}, 
+		{
+			"name": "central", 
+			"team1": "", 
+			"team2": "", 
+			"team1Win": null
+		}, 
+		{
+			"name": "east", 
+			"team1": "", 
+			"team2": "", 
+			"team1Win": null
+		}
 	], 
 	"round2": [
-		"", 
-		"", 
-		"", 
-		""
+		{
+			"name": "west", 
+			"team1": "", 
+			"team2": "?", 
+			"team1Win": null
+		}, 
+		{
+			"name": "south", 
+			"team1": "", 
+			"team2": "?", 
+			"team1Win": null
+		}, 
+		{
+			"name": "central", 
+			"team1": "", 
+			"team2": "?", 
+			"team1Win": null
+		}, 
+		{
+			"name": "east", 
+			"team1": "", 
+			"team2": "?", 
+			"team1Win": null
+		}
 	], 
 	"round3": [
-		"", 
-		""
+		{
+			"name": "west south", 
+			"team1": "?", 
+			"team2": "?", 
+			"team1Win": null
+		}, 
+		{
+			"name": "central east", 
+			"team1": "?", 
+			"team2": "?", 
+			"team1Win": null
+		}
 	], 
 	"round4": [
-		""
+		{
+			"name": "championship", 
+			"team1": "?", 
+			"team2": "?", 
+			"team1Win": null
+		}
 	]
 }

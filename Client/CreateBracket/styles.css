@@ -1,0 +1,45 @@
+body {
+	overflow-x: hidden;
+}
+h1 {
+	margin: 0;
+	margin-top: 4vh;
+}
+.bracket {
+	display: flex;
+	flex-direction: row;
+	width: 95vw;
+	overflow: hidden;
+	max-height: 70vh;
+	overflow-y: auto;
+	display: none;
+}
+.bracket .roundContainer .round {
+	display: flex;
+	flex-direction: column;
+	width: 95vw;
+	margin: 0;
+}
+.bracket .roundContainer .round .game {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+.bracket .roundContainer .round .game .teamSelect {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 3vh;
+}
+
+.navControls {
+	width: 70vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-left: auto;
+	margin-right: auto;
+}
+#navBackButton {
+	opacity: 0;
+	user-select: none;
+}

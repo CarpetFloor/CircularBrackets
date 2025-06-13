@@ -25,6 +25,14 @@ const pages = [
 		"/UserHome/index.html", 
 		[], 
 		["/UserHome/script.js"]
+	), 
+
+	new Page(
+		"create bracket", 
+		"Circular Brackets - Create Bracket", 
+		"/CreateBracket/index.html", 
+		["/CreateBracket/styles.css"], 
+		["/CreateBracket/script.js"]
 	)
 ];
 
@@ -107,6 +115,15 @@ window.onload = () => {
 		content = document.querySelector("#mainContent");
 		loadedScriptsElem = document.querySelector("#loadedScripts");
 
-		loadPage("guest home");
+		const loggedInCheck = localStorage.getItem("loggedIn");
+		socket.emit("check logged in", loggedInCheck);
+
+		socket.on("not logged in", (loggedIn) => {
+			loadPage("guest home");
+		});
+
+		socket.on("logged in", () => {
+			loadPage("user home");
+		});
 	});
 }

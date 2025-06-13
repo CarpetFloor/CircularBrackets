@@ -9,6 +9,8 @@ const fs = require("fs").promises;
 const path = require("path");
 const crypto = require("crypto");
 
+let playoffTeams = null;
+
 // add static files
 app.use(express.static(__dirname + "/Client"));
 app.get("/", (req, res) => {
@@ -29,6 +31,7 @@ async function getKeyFile() {
 }
 
 async function run() {
+
 const keyFile = await getKeyFile();
 const key = Buffer.from(keyFile, "hex");
 const algorithm = "aes-256-cbc";
@@ -259,7 +262,7 @@ async function handleRequestLogin(socket, inputs) {
     }
 }
 
-async function handleCheckLoggedIn(localStorageValue, socket) {
+async function handleCheckLoggedIn(socket, localStorageValue) {
     if(localStorageValue === null) {
         socket.emit("not logged in");
         return;
@@ -280,10 +283,27 @@ async function handleCheckLoggedIn(localStorageValue, socket) {
     socket.emit("not logged in");
 }
 
+async function handleGetMatchups(socket) {
+    try {
+        const matchups = JSON.parse(
+            await fs.readFile("Data/Global/Results.json")
+        );
+
+        socket.emit("send matchups", matchups);
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR checking for username not taken:");
+        console.log(`\t${error.message}`);
+
+        socket.emit("send matchups", null);
+    }
+}
+
 // handle users
 io.on("connection", (socket) => {
     socket.on("check logged in", (localStorageValue) => {
-        handleCheckLoggedIn(localStorageValue, socket);
+        handleCheckLoggedIn(socket, localStorageValue);
     });
 
     socket.on("request signup", (inputs) => {
@@ -292,6 +312,10 @@ io.on("connection", (socket) => {
 
     socket.on("request login", (inputs) => {
         handleRequestLogin(socket, inputs);
+    });
+
+    socket.on("get matchups", () => {
+        handleGetMatchups(socket);
     });
 });
 
