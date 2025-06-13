@@ -300,6 +300,45 @@ async function handleGetMatchups(socket) {
     }
 }
 
+async function handleSendBracket(socket, username, bracket) {
+    try {
+        let userData = JSON.parse(await fs.readFile(`Data/User/${username}.json`));
+        userData.bracket = bracket;
+
+        await fs.writeFile(
+            `Data/User/${username}.json`, 
+            JSON.stringify(userData)
+        );
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR creating bracket:");
+        console.log(`\t${error.message}`);
+
+        socket.emit("bracket creation failed");
+        return;
+    }
+}
+
+async function handleCheckForBracket(socket, username) {
+    try {
+        const userData = JSON.parse(await fs.readFile(`Data/User/${username}.json`));
+
+        socket.emit(
+            "bracket check result", 
+            (userData.bracket !== null)
+        );
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR checking for bracket:");
+        console.log(`\t${error.message}`);
+
+        socket.emit("bracket check failed");
+        return;
+    }
+}
+
 // handle users
 io.on("connection", (socket) => {
     socket.on("check logged in", (localStorageValue) => {
@@ -316,6 +355,14 @@ io.on("connection", (socket) => {
 
     socket.on("get matchups", () => {
         handleGetMatchups(socket);
+    });
+
+    socket.on("send bracket", (data) => {
+        handleSendBracket(socket, data.username, data.bracket);
+    });
+
+    socket.on("check for bracket", (username) => {
+        handleCheckForBracket(socket, username);
     });
 });
 

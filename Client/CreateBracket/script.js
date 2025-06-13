@@ -214,6 +214,72 @@ activeScripts.push(() => {
 				button.innerText = "Submit";
 
 				document.querySelector("#lastRound").appendChild(button);
+
+				button.addEventListener("click", () => {
+					const bracketData = {};
+
+					const rounds = document.querySelectorAll(".round");
+
+					let roundIndex = 0;
+					for(let round of rounds) {
+						const games = round.querySelectorAll(".game");
+
+						const roundData = [];
+						
+						for(let game of games) {
+							const inputs = game.querySelectorAll("input");
+
+							for(let input of inputs) {
+								if(input.checked) {
+									const teamSelected = input.nextElementSibling.textContent;
+									const gameName = game.children[0].textContent;
+
+									roundData.push(
+										{
+											name: gameName, 
+											prediction: teamSelected, 
+											correct: null
+										}
+									);
+
+									break;
+								}
+							}
+						}
+
+						const roundName = `round${roundIndex + 1}`;
+
+						Object.defineProperty(
+							bracketData, 
+							roundName, 
+							{
+								value: roundData, 
+								writeable: false, 
+								enumerable: true, 
+								configurable: false
+							}
+						);
+
+						++roundIndex;
+					}
+
+					document.querySelector(".bracket").style.pointerEvents = "none";
+
+					document.querySelector("#submitBracketButton").innerText = "Submitted";
+
+					socket.emit(
+						"send bracket", 
+						{
+							username: localStorage.getItem("loggedIn"), 
+							bracket: bracketData
+						}
+					);
+
+					socketListeners.push("bracket creation failed");
+					socket.on("bracket creation failed", () => {
+						window.alert("server failed to create bracket");
+					});
+				});
 			}
 		}
 
