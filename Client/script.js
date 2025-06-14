@@ -1,5 +1,7 @@
 let socket = io();
 
+let bracketDeadline = null;
+
 class Page {
 	constructor(name, title, path, stylesheets, scripts) {
 		this.name = name;
@@ -42,6 +44,7 @@ const stylesheets = [];
 const activeScripts = [];
 const activeListeners = [];
 const socketListeners = [];
+let intervals = [];
 let loadedScriptsElem = null;
 
 function clearCurrentPage() {
@@ -67,6 +70,10 @@ function clearCurrentPage() {
 
 	for(let sheet of stylesheets) {
 		sheet.remove();
+	}
+
+	for(let interval of intervals) {
+		window.clearInterval(interval);
 	}
 }
 
@@ -110,20 +117,56 @@ function loadPage(name) {
 	}
 }
 
+let diff = null;
+let daysDiff = null;
+let hoursDiff = null;
+let minutesDiff = null;
+
+function updateTimeDiff() {
+	const now = new Date();
+	diff = bracketDeadline - now;
+	daysDiff = Math.floor(
+		diff  / 
+		(1000 * 3600 * 24)
+	);
+	
+	hoursDiff = Math.floor(
+		(diff - 
+			(daysDiff * (1000 * 3600 * 24))
+		) / 
+		(1000 * 60 * 60)
+	);
+
+	minutesDiff = Math.floor(
+		(diff - 
+			(daysDiff * (1000 * 3600 * 24)) - 
+			(hoursDiff * (1000 * 60 * 60))
+		) / 
+		(1000 * 60)
+	);
+}
+
 window.onload = () => {
 	socket.on("connect", () => {
-		content = document.querySelector("#mainContent");
-		loadedScriptsElem = document.querySelector("#loadedScripts");
+		socket.on("send bracket deadline", (deadline) => {
+			bracketDeadline = new Date(deadline);
 
-		const loggedInCheck = localStorage.getItem("loggedIn");
-		socket.emit("check logged in", loggedInCheck);
+			updateTimeDiff();
+			window.setInterval(updateTimeDiff, 1000 * 60);
 
-		socket.on("not logged in", (loggedIn) => {
-			loadPage("guest home");
-		});
+			content = document.querySelector("#mainContent");
+			loadedScriptsElem = document.querySelector("#loadedScripts");
 
-		socket.on("logged in", () => {
-			loadPage("user home");
+			const loggedInCheck = localStorage.getItem("loggedIn");
+			socket.emit("check logged in", loggedInCheck);
+
+			socket.on("not logged in", (loggedIn) => {
+				loadPage("guest home");
+			});
+
+			socket.on("logged in", () => {
+				loadPage("user home");
+			});
 		});
 	});
 }

@@ -86,6 +86,22 @@ activeScripts.push(() => {
 		localStorage.setItem("loggedIn", usernameEntered);
 		loadPage("user home");
 	});
+
+	function updateTime() {
+		if(diff > 0) {
+			document.querySelector("#bracketDeadline").innerText = `You have ${daysDiff.toFixed(0)} days, ${hoursDiff.toFixed(0)} hours, and ${minutesDiff.toFixed(0)} minutes left to create a bracket!`;
+		}
+		else {
+			document.querySelector("#bracketDeadline").innerText = "Deadline to create bracket is over";
+		}
+	}
+
+	updateTime();
+	const interval = window.setInterval(() => {
+		updateTime();
+	}, 1000 * 30);
+
+	intervals.push(interval);
 });
 
 activeScripts.at(-1)();

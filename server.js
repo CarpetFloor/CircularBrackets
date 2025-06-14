@@ -11,6 +11,8 @@ const crypto = require("crypto");
 
 let playoffTeams = null;
 
+const bracketDeadline = new Date("July 21, 2025 00:00:00");
+
 // add static files
 app.use(express.static(__dirname + "/Client"));
 app.get("/", (req, res) => {
@@ -341,6 +343,8 @@ async function handleCheckForBracket(socket, username) {
 
 // handle users
 io.on("connection", (socket) => {
+    socket.emit("send bracket deadline", bracketDeadline);
+
     socket.on("check logged in", (localStorageValue) => {
         handleCheckLoggedIn(socket, localStorageValue);
     });

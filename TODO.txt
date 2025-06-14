@@ -8,14 +8,13 @@
 	[+]Not logged-in page (maybe show brackets leaderboard)
 	[+]Logged-in home page (leaderboard with users' brackets)
 	[+]Logged-in create bracket page
-[]Server-side enter playoff teams and playoff game results
-[]Only allow users to create bracket until certain date, and:
-	[]Display time left
-[]Client-side requests to server to grab team IDs, and:
-	[]Grab team details from team IDs
-[]User create bracket
+[+]Server-side enter playoff teams and playoff game results
+[+]Only allow users to create bracket until certain date, and:
+	[+]Display time left
+[+]User create bracket
 []User view leaderboard with all brackets
 []Client-side request when loading logged-in home for server to check if player brackets need to be updated
+[]Update bracket results and points
 []Website UI and UX to actually look and feel complete
 []Make sure everything looks good on computers
 []HTTPS
