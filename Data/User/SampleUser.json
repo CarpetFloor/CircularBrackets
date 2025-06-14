@@ -1,6 +1,7 @@
 {
 	"username": "SampleUser", 
 	"password": "encryptedPass", 
+	"points": 0, 
 	"bracket": {
 		"round1": [
 			{"prediction": "", "correct": null}, 

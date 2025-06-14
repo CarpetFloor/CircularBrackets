@@ -42,7 +42,6 @@ let content = null;
 
 const stylesheets = [];
 const activeScripts = [];
-const activeListeners = [];
 const socketListeners = [];
 let intervals = [];
 let loadedScriptsElem = null;
@@ -50,13 +49,6 @@ let loadedScriptsElem = null;
 function clearCurrentPage() {
 	content.innerHTML = "";
 	document.body.style.backgroundColor = "rgb(50, 50, 50)";
-
-	for(let listener of activeListeners) {
-		listener.el.removeEventListener(
-			listener.type, 
-			listener.handler
-		);
-	}
 
 	loadedScriptsElem.innerHTML = "";
 

@@ -171,6 +171,7 @@ async function createAccount(usernameInput, passwordInput, socket) {
     const fileData = {
         username: usernameInput, 
         password: encrypt(passwordInput), 
+        points: 0, 
         bracket: null
     };
     const file = JSON.stringify(fileData);
@@ -341,6 +342,54 @@ async function handleCheckForBracket(socket, username) {
     }
 }
 
+async function getLeaderbaord() {
+    leaderboard = [];
+
+    try {
+        const directory = path.join(__dirname, "/Data/User");
+        const files = await fs.readdir(directory);
+
+        const userFiles = files
+            .map(fileName => {
+                return path.join(directory, fileName);
+            })
+            .filter(isFile)
+        ;
+
+        for(let file of userFiles) {
+            const data = JSON.parse(await fs.readFile(
+                file, 
+                "utf8"
+            ));
+
+            if(data.bracket !== null) {
+                leaderboard.push({
+                    username: data.username, 
+                    points: data.points
+                });
+            }
+        }
+
+        const compare = (a, b) => {
+            return a.points - b.points;
+        }
+        
+        leaderboard.sort(compare);
+
+        return leaderboard;
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR getting leaderboard:");
+        console.log(`\t${error.message}`);
+
+        return [];
+    }
+}
+
+let leaderboard = [];
+await getLeaderbaord();
+
 // handle users
 io.on("connection", (socket) => {
     socket.emit("send bracket deadline", bracketDeadline);
@@ -355,6 +404,10 @@ io.on("connection", (socket) => {
 
     socket.on("request login", (inputs) => {
         handleRequestLogin(socket, inputs);
+    });
+
+    socket.on("request leaderboard", () => {
+        socket.emit("send leaderboard", leaderboard);
     });
 
     socket.on("get matchups", () => {

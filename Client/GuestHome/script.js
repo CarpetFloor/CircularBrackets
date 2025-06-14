@@ -67,7 +67,6 @@ activeScripts.push(() => {
 		usernameEntered = document.querySelector("#loginUsername").value;
 		const passwordEntered = document.querySelector("#loginPassword").value;
 		
-		console.log("sending request");
 		socket.emit("request login", {
 			username: usernameEntered, 
 			password: passwordEntered
@@ -102,6 +101,25 @@ activeScripts.push(() => {
 	}, 1000 * 30);
 
 	intervals.push(interval);
+
+	socket.emit("request leaderboard");
+
+	socketListeners.push("send leaderboard");
+	socket.on("send leaderboard", (leaderboard) => {
+		console.log("leaderboard");
+		console.log(leaderboard);
+
+		for(let user of leaderboard) {
+			document.querySelector(".leaderboard")
+				.innerHTML += `
+					<div>
+						<p class="username">${user.username}</p>
+						<p class="points">${user.points}</p>
+					</div>
+				`
+			;
+		}
+	});
 });
 
 activeScripts.at(-1)();

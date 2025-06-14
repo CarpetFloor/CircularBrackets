@@ -16,20 +16,16 @@ activeScripts.push(() => {
 		const mainChildren = document.querySelector(".main").children
 		
 		if(created) {
-			if(mainChildren.length > 2) {
-				mainChildren[mainChildren.length - 1].remove();
-			}
+			document.querySelector("#createBracketContainer").innerHTML = "";
 
 			const p = document.createElement("p");
 			p.className = "bracketCreatedNotice";
 			p.innerText = "You have already created a bracket";
 
-			document.querySelector(".main").appendChild(p);
+			document.querySelector("#createBracketContainer").appendChild(p);
 		}
 		else if(diff > 0) {
-			if(mainChildren.length > 2) {
-				mainChildren[mainChildren.length - 1].remove();
-			}
+			document.querySelector("#createBracketContainer").innerHTML = "";
 
 			document.querySelector("#bracketDeadline").innerText = `You have ${daysDiff.toFixed(0)} days, ${hoursDiff.toFixed(0)} hours, and ${minutesDiff.toFixed(0)} minutes left to create a bracket!`;
 
@@ -37,7 +33,7 @@ activeScripts.push(() => {
 			button.id = "createBracketButton";
 			button.innerText = "Create Bracket";
 
-			document.querySelector(".main").appendChild(button);
+			document.querySelector("#createBracketContainer").appendChild(button);
 
 			document.querySelector("#createBracketButton").
 				addEventListener(
@@ -64,6 +60,30 @@ activeScripts.push(() => {
 		}, 1000 * 30);
 
 		intervals.push(interval);
+	});
+
+	socket.emit("request leaderboard");
+
+	socketListeners.push("send leaderboard");
+	socket.on("send leaderboard", (leaderboard) => {
+		console.log("leaderboard");
+		console.log(leaderboard);
+
+		for(let user of leaderboard) {
+			let usernameElem = `<p class="username">${user.username}</p>`;
+			if(user.username == localStorage.getItem("loggedIn")) {
+				usernameElem = `<p class="username" style="text-decoration: underline;">You</p>`;
+			}
+
+			document.querySelector(".leaderboard")
+				.innerHTML += `
+					<div>
+						${usernameElem}
+						<p class="points">${user.points}</p>
+					</div>
+				`
+			;
+		}
 	});
 });
 
