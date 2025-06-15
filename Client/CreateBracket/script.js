@@ -25,8 +25,6 @@ activeScripts.push(() => {
 
 	socketListeners.push("send matchups");
 	socket.on("send matchups", (matchups) => {
-		console.log(matchups);
-
 		if(matchups === null) {
 			window.alert("Server error getting data");
 			return;
@@ -50,7 +48,7 @@ activeScripts.push(() => {
 					for(let gameElem of parent.children) {
 						const title = gameElem.querySelector(".title");
 
-						if(title.innerText.toLowerCase() == game.name) {
+						if(title.textContent == game.name) {
 							gameElemIndex = index;
 							break;
 						}
@@ -229,22 +227,30 @@ activeScripts.push(() => {
 						for(let game of games) {
 							const inputs = game.querySelectorAll("input");
 
+							let teamSelected = null;
+							let otherTeam = null;
+							let gameName = null;
+							let predictionFirst = inputs[0].checked;
+
 							for(let input of inputs) {
 								if(input.checked) {
-									const teamSelected = input.nextElementSibling.textContent;
-									const gameName = game.children[0].textContent;
-
-									roundData.push(
-										{
-											name: gameName, 
-											prediction: teamSelected, 
-											correct: null
-										}
-									);
-
-									break;
+									teamSelected = input.nextElementSibling.textContent;
+									gameName = game.children[0].textContent;
+								}
+								else {
+									otherTeam = input.nextElementSibling.textContent;
 								}
 							}
+
+							roundData.push(
+								{
+									name: gameName, 
+									prediction: teamSelected, 
+									over: otherTeam, 
+									predictionIsTop: predictionFirst, 
+									correct: null
+								}
+							);
 						}
 
 						const roundName = `round${roundIndex + 1}`;

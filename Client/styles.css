@@ -74,6 +74,10 @@
 	box-shadow: 0 0 15px grey;
 	display: none;
 }
+.bracketView #closeBracketViewButton {
+	position: absolute;
+	right: 0;
+}
 .bracketView .username {
 	font-weight: bold;
 	font-size: 1.35em;

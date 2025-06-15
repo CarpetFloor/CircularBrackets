@@ -66,9 +66,6 @@ activeScripts.push(() => {
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
-		console.log("leaderboard");
-		console.log(leaderboard);
-
 		for(let user of leaderboard) {
 			let usernameElem = `<p class="username">${user.username}</p>`;
 			if(user.username == localStorage.getItem("loggedIn")) {

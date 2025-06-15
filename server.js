@@ -342,6 +342,41 @@ async function handleCheckForBracket(socket, username) {
     }
 }
 
+async function handleRequestBracketUserData(socket, username) {
+    try {
+        const directory = path.join(__dirname, "/Data/User");
+        const files = await fs.readdir(directory);
+
+        const userFiles = files
+            .map(fileName => {
+                return path.join(directory, fileName);
+            })
+            .filter(isFile)
+        ;
+
+        for(let file of userFiles) {
+            const data = JSON.parse(await fs.readFile(
+                file, 
+                "utf8"
+            ));
+
+            if(
+                (data.username == username) && 
+                (data.bracket !== null)
+            ) {
+                socket.emit("send bracket user data", data.bracket);
+
+                return;
+            }
+        }
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR getting user bracket data:");
+        console.log(`\t${error.message}`);
+    }
+}
+
 async function getLeaderbaord() {
     leaderboard = [];
 
@@ -362,7 +397,10 @@ async function getLeaderbaord() {
                 "utf8"
             ));
 
-            if(data.bracket !== null) {
+            if(
+                (data.username != "SampleUser") && 
+                (data.bracket !== null)
+            ) {
                 leaderboard.push({
                     username: data.username, 
                     points: data.points
@@ -420,6 +458,10 @@ io.on("connection", (socket) => {
 
     socket.on("check for bracket", (username) => {
         handleCheckForBracket(socket, username);
+    });
+
+    socket.on("request bracket user data", (username) => {
+        handleRequestBracketUserData(socket, username);
     });
 });
 

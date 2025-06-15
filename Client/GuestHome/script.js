@@ -107,15 +107,87 @@ activeScripts.push(() => {
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
 		for(let user of leaderboard) {
-			document.querySelector(".leaderboard")
-				.innerHTML += `
-					<div>
-						<p class="username">${user.username}</p>
-						<p class="points">${user.points}</p>
-					</div>
-				`
-			;
+			const div = document.createElement("div");
+
+			const username = document.createElement("p");
+			username.className = "username";
+			username.innerText = user.username;
+			div.appendChild(username);
+
+			const points = document.createElement("p");
+			points.className = "points";
+			points.innerText = user.points;
+			div.appendChild(points);
+
+			document.querySelector(".leaderboard").appendChild(div);
+
+			div.addEventListener("click", () => {
+				socket.emit(
+					"request bracket user data", 
+					username.textContent
+				);
+			});
 		}
+
+		document.querySelector("#closeBracketViewButton").addEventListener("click", () => {
+			document.querySelector(".bracketView").style.display = "none";
+		});
+
+		socketListeners.push("send bracket user data");
+		socket.on("send bracket user data", (bracketData) => {
+			let roundIndex = 0;
+			for(
+				const [roundKey, roundValue] of 
+				Object.entries(bracketData)
+			) {
+				const roundElem = document.querySelectorAll(".round")[roundIndex];
+
+				let gameIndex = 0;
+				for(
+					const [gameKey, gameValue] of 
+					Object.entries(roundValue)
+				) {
+					for(let game of roundElem.querySelectorAll(".game")) {
+
+						const nameCheck = game.querySelector(".title").textContent;
+
+						if(nameCheck == gameValue.name) {
+							const teamElems = game.querySelectorAll(".name");
+
+							let predictionIndex = 0;
+							let overIndex = 1;
+
+							if(!(gameValue.predictionIsTop)) {
+								predictionIndex = 1;
+								overIndex = 0;
+							}
+
+							teamElems[predictionIndex].textContent = gameValue.prediction;
+							teamElems[overIndex].textContent = gameValue.over;
+
+							// correct value is null when initialized, indicating that game hasn't happened
+							if(gameValue.correct === true) {
+								teamElems[predictionIndex].parentElement.parentElement.classList.add("correct");
+							}
+							else if(gameValue.correct === false) {
+								teamElems[predictionIndex].parentElement.parentElement.classList.add("incorrect");
+							}
+
+							teamElems[overIndex].parentElement.parentElement.className = "teamContainer";
+
+							break;
+						}
+					}
+
+
+					++gameIndex;
+				}
+
+				++roundIndex;
+			}
+
+			document.querySelector(".bracketView").style.display = "flex";
+		});
 
 		let marginLeft = 0;
 		let round = 0;
