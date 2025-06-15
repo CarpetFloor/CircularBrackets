@@ -54,6 +54,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	box-shadow: 0 2px 5px silver;
 }
 .leaderboard div .username {
 	font-weight: bold;
@@ -63,4 +64,83 @@
 	background: black;
 	color: white;
 	padding: 0.2em;
+}
+
+.bracketView {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	background: white;
+	box-shadow: 0 0 15px grey;
+	display: none;
+}
+.bracketView .username {
+	font-weight: bold;
+	font-size: 1.35em;
+}
+.bracketView .bracket {
+	display: flex;
+	flex-direction: row;
+	width: 95vw;
+	overflow: hidden;
+	max-height: 50vh;
+	overflow-y: auto;
+	/*display: none;*/
+}
+.bracketView .bracket .roundContainer .round {
+	display: flex;
+	flex-direction: column;
+	width: 95vw;
+	margin: 0;
+}
+.bracketView .bracket .roundContainer .round .game {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+.bracketView .bracket .roundContainer .round .game .title {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.bracketView .bracket .roundContainer .round .game .teamContainer {
+	display: flex;
+	flex-direction: row;
+}
+.bracketView .bracket .roundContainer .round .game .teamContainer .outline {
+	display: flex;
+	flex-direction: row;
+	border: 2px solid transparent;
+}
+
+.bracketView .bracket .roundContainer .round .game .teamContainer .outline button {
+	opacity: 0;
+	pointer-events: none;
+}
+.bracketView .bracket .roundContainer .round .game .teamContainer .pointsGained {
+	display: none;
+}
+.bracketView .bracket .roundContainer .round .game .correct .outline {
+	border-color: green;
+}
+.bracketView .bracket .roundContainer .round .game .correct .outline button {
+	opacity: 1;
+}
+.bracketView .bracket .roundContainer .round .game .correct .pointsGained {
+	display: flex;
+}
+.bracketView .bracket .roundContainer .round .game .incorrect .outline {
+	border-color: red;
+}
+.bracketView .navControls {
+	width: 70vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5vh;
+}
+.bracketView .navControls #navBackButton {
+	opacity: 0;
+	user-select: none;
 }

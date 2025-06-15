@@ -106,9 +106,6 @@ activeScripts.push(() => {
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
-		console.log("leaderboard");
-		console.log(leaderboard);
-
 		for(let user of leaderboard) {
 			document.querySelector(".leaderboard")
 				.innerHTML += `
@@ -119,6 +116,72 @@ activeScripts.push(() => {
 				`
 			;
 		}
+
+		let marginLeft = 0;
+		let round = 0;
+		const maxRound = 3;
+
+		const firstRoundContainer = document.querySelector("#firstRound");
+
+		function updateTitle() {
+			document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`
+		}
+
+		function previousRound() {
+			for(let button of document.querySelector(".navControls").querySelectorAll("button")) {
+				button.style.opacity = "1";
+				button.style.pointerEvents = "auto";
+			}
+
+			if(round > 0) {
+				marginLeft += 95;
+				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
+
+				--round;
+
+				updateTitle();
+
+				if(round == 0) {
+					document.querySelector("#navBackButton").style.opacity = "0";
+					document.querySelector("#navBackButton").style.pointerEvents = "none";
+				}
+			}
+		}
+
+		function nextRound() {
+			for(let button of document.querySelector(".navControls").querySelectorAll("button")) {
+				button.style.opacity = "1";
+				button.style.pointerEvents = "auto";
+			}
+
+			if(round < maxRound) {
+				marginLeft -= 95;
+				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
+
+				++round;
+
+				updateTitle();
+
+				if(round == maxRound) {
+					document.querySelector("#navForwardButton").style.opacity = "0";
+					document.querySelector("#navForwardButton").style.pointerEvents = "none";
+				}
+			}
+		}
+
+		document.querySelector("#navBackButton").addEventListener(
+			"click", 
+			() => {
+				previousRound();
+			}
+		);
+
+		document.querySelector("#navForwardButton").addEventListener(
+			"click", 
+			() => {
+				nextRound();
+			}
+		);
 	});
 });
 
