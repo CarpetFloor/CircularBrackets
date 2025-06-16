@@ -13,7 +13,7 @@
 	[+]Display time left
 [+]User create bracket
 [+]Leaderboard
-[]View individual bracket
+[+]View individual bracket
 []View individual bracket on user home
 []Update bracket results and points
 []Client-side request when loading logged-in home for server to check if player brackets need to be updated
