@@ -88,7 +88,17 @@ activeScripts.push(() => {
 
 	function updateTime() {
 		if(diff > 0) {
-			document.querySelector("#bracketDeadline").innerText = `You have ${daysDiff.toFixed(0)} days, ${hoursDiff.toFixed(0)} hours, and ${minutesDiff.toFixed(0)} minutes left to create a bracket!`;
+			const parent = document.querySelector("#bracketDeadline");
+			const children = parent.children[1].children;
+
+			const daysElem = children[0].children[0];
+			daysElem.innerText = daysDiff.toFixed(0);
+
+			const hoursElem = children[1].children[0];
+			hoursElem.innerText = hoursDiff.toFixed(0);
+
+			const minutesElem = children[2].children[0];
+			minutesElem.innerText = minutesDiff.toFixed(0);
 		}
 		else {
 			document.querySelector("#bracketDeadline").innerText = "Deadline to create bracket is over";

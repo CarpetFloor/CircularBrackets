@@ -23,6 +23,14 @@ activeScripts.push(() => {
 			p.innerText = "You have already created a bracket";
 
 			document.querySelector("#createBracketContainer").appendChild(p);
+
+			document.querySelector("#createBracketContainer").innerHTML += `<button id="viewMyBracketButton">View My Bracket</button>`;
+			document.querySelector("#viewMyBracketButton").addEventListener("click", () => {
+				socket.emit(
+					"request bracket user data", 
+					localStorage.getItem("loggedIn")
+				);
+			});
 		}
 		else if(diff > 0) {
 			document.querySelector("#createBracketContainer").innerHTML = "";
@@ -214,13 +222,6 @@ activeScripts.push(() => {
 				nextRound();
 			}
 		);
-
-		document.querySelector("#viewMyBracketButton").addEventListener("click", () => {
-			socket.emit(
-				"request bracket user data", 
-				localStorage.getItem("loggedIn")
-			);
-		});
 	});
 });
 

@@ -1,3 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+
+:root {
+	--purple: #4749C2;
+	/*--grey: #E8E8F7;*/
+	--lightGrey: #eaecee;
+	--grey: #d5d8dc;
+	--blue: #78AFE3;
+	--red: #B25759;
+
+	--radius: 10px;
+}
+
+* {
+	font-family: "Noto Sans";
+}
+
+body {
+	opacity: 0;
+	overflow-x: hidden;
+}
+
+h1 {
+	color: var(--purple);
+	font-size: 2.5em;
+}
+
+button {
+	border: none;
+	font-size: 1em;
+	background-color: black;
+	color: white;
+	padding: 0.5em;
+	border-radius: var(--radius);
+}
+
 #mainContent {
 	width: 100%;
 	height: 100%;
@@ -10,10 +46,17 @@
 .header {
 	position: fixed;
 	margin: 0;
-	width: 95vw;
+	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+	background-color: var(--lightGrey);
+	box-sizing: border-box;
+	padding-right: 5vw;
+	height: 2.5em;
+}
+.header button {
+	background-color: var(--purple);
 }
 .header .horizontal {
 	display: flex;
@@ -24,7 +67,9 @@
 }
 .header .popup {
 	display: none;
-	background-color: grey;
+	background-color: var(--grey);
+	width: 10em;
+	height: 10em;
 }
 .header .popup .enterInfo {
 	display: none;
@@ -38,13 +83,55 @@
 	padding-top: 8vh;
 }
 
+#createBracketButton {
+	margin-top: 3vh;
+}
+
+#bracketDeadline {
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 5px 5px var(--lightGrey);
+}
+#bracketDeadline .heading {
+	background-color: black;
+	color: white;
+	padding: 0.25em;
+}
+#bracketDeadline .timeSections {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	width: 100%;
+}
+#bracketDeadline .timeSections div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+#bracketDeadline .timeSections div .number {
+	margin: 0;
+	font-size: 1.2em;
+	background-color: black;
+	color: white;
+	padding: 0.5em;
+	font-weight: bold;
+	width: fit-content;
+}
+#bracketDeadline .timeSections div .text {
+	margin: 0;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
 .leaderboard {
 	display: flex;
 	flex-direction: column;
-	width: fit-content;
+	width: 100%;
+	margin-top: 7vh;
+	align-items: center;
 }
 .leaderboard .heading {
-	font-size: 1.2em;
+	font-size: 1.5em;
 	font-weight: bold;
 	margin: 0;
 	margin-bottom: 1vh;
@@ -54,18 +141,31 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	box-shadow: 0 2px 5px silver;
-}
-.leaderboard div .username {
-	font-weight: bold;
-	margin-right: 5vw;
-}
-.leaderboard div .points {
-	background: black;
-	color: white;
-	padding: 0.2em;
+	box-shadow: 0 2px 5px silver;	
+	width: 90vw;
 }
 
+.leaderboard div .username {
+	margin-left: 1em;
+	font-weight: bold;
+	font-size: 1.2em;
+	/*margin-right: 1em;*/
+}
+.leaderboard div .points {
+	margin-right: 1em;
+	background: var(--purple);
+	color: white;
+	padding: 0.2em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	font-weight: bold;
+	border-radius: var(--radius);
+	font-size: 1.1em;
+}
+.leaderboard div * {
+	margin-left: 0;
+	margin-right: 0;
+}
 .bracketView {
 	display: flex;
 	flex-direction: column;
@@ -89,7 +189,6 @@
 	overflow: hidden;
 	max-height: 50vh;
 	overflow-y: auto;
-	/*display: none;*/
 }
 .bracketView .bracket .roundContainer .round {
 	display: flex;

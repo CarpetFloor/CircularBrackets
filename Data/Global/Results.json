@@ -4,19 +4,19 @@
 			"name": "West", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": false
+			"team1Win": null
 		}, 
 		{
 			"name": "South", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": false
+			"team1Win": null
 		}, 
 		{
 			"name": "Central", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": false
+			"team1Win": null
 		}, 
 		{
 			"name": "East", 

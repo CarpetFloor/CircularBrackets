@@ -141,6 +141,7 @@ function updateTimeDiff() {
 window.onload = () => {
 	socket.on("connect", () => {
 		socket.on("send bracket deadline", (deadline) => {
+			document.body.style.opacity = "1";
 			bracketDeadline = new Date(deadline);
 
 			updateTimeDiff();

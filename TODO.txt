@@ -16,7 +16,7 @@
 [+]View individual bracket
 [+]View individual bracket on user home
 [+]Update bracket results and points
-[]Client-side request when loading logged-in home for server to check if player brackets need to be updated
+[+]Client-side request when loading logged-in home for server to check if player brackets need to be updated
 []Website UI and UX to actually look and feel complete
 []Make sure everything looks good on computers
 []HTTPS
