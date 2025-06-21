@@ -141,7 +141,6 @@ function updateTimeDiff() {
 window.onload = () => {
 	socket.on("connect", () => {
 		socket.on("send bracket deadline", (deadline) => {
-			document.body.style.opacity = "1";
 			bracketDeadline = new Date(deadline);
 
 			updateTimeDiff();
@@ -160,6 +159,10 @@ window.onload = () => {
 			socket.on("logged in", () => {
 				loadPage("user home");
 			});
+
+			window.setInterval(() => {
+				document.body.style.opacity = "1";
+			}, 250);
 		});
 	});
 }

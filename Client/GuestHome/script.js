@@ -101,7 +101,14 @@ activeScripts.push(() => {
 			minutesElem.innerText = minutesDiff.toFixed(0);
 		}
 		else {
-			document.querySelector("#bracketDeadline").innerText = "Deadline to create bracket is over";
+			const elem = document.querySelector("#bracketDeadline");
+			
+			elem.innerText = "Deadline to create bracket is over";
+			
+			elem.style.backgroundColor = "black";
+			elem.style.color = "white";
+			elem.style.padding = "0.5em";
+			elem.style.fontWeight = "bold";
 		}
 	}
 
