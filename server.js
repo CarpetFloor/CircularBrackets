@@ -286,6 +286,121 @@ async function handleCheckLoggedIn(socket, localStorageValue) {
     socket.emit("not logged in");
 }
 
+async function updateBrackets(resultsData) {
+    const resultsMap = new Map();
+
+    let roundIndex = 0;
+    for(let round in resultsData) {
+        for(let game of resultsData[round]) {
+            let result = null;
+            if(game.team1Win === true) {
+                result = game.team1;
+            }
+            else if(game.team1Win === false) {
+                result = game.team2;
+            }
+
+            resultsMap.set(
+                `${roundIndex}${game.name}`, 
+                result
+            );
+        }
+
+        ++roundIndex;
+    }
+
+    const directory = path.join(__dirname, "/Data/User");
+    const files = await fs.readdir(directory);
+
+    const users = files
+        .map(fileName => {
+            return path.join(directory, fileName);
+        })
+        .filter(isFile)
+    ;
+
+    console.log((new Date()).toString());
+    console.log("Updating brackets");
+    for(const user of users) {
+        const userData = JSON.parse(await fs.readFile(user));
+
+        if(userData.bracket !== null) {
+            let points = 0;
+
+            let roundIndex = 0;
+            for(let round in userData.bracket) {
+                for(let game of userData.bracket[round]) {
+                    const gameId = `${roundIndex}${game.name}`;
+
+                    const result = resultsMap.get(gameId);
+
+                    if(result !== undefined) {
+                        if(result !== null) {
+                            game.correct = 
+                                (result == game.prediction)
+                            ;
+                            
+                            if(game.correct) {
+                                points += 10 * Math.pow(
+                                    2, 
+                                    roundIndex
+                                );
+                            }
+                        }
+
+                    }
+
+                }
+
+                ++roundIndex;
+            }
+
+            userData.points = points;
+
+            await fs.writeFile(
+                user, 
+                JSON.stringify(userData)
+            );
+        }
+    }
+}
+
+let lastUpdatedGame = {round: null, game: null};
+async function checkForResultsUpdate() {
+    const data = JSON.parse(await fs.readFile("Data/Global/Results.json"));
+
+    let lastGame = {round: null, game: null};
+    let found = false;
+
+    let roundIndex = 0;
+    for(let round in data) {
+        for(let game of data[round]) {
+            if(game.team1Win !== null) {
+                lastGame.round = roundIndex;
+                lastGame.game = game.name;
+            }
+        }
+
+        ++roundIndex;
+    }
+
+    if(
+        (lastGame.round != lastUpdatedGame.round) || 
+        (lastGame.game != lastUpdatedGame.game)
+    ) {
+        lastUpdatedGame.round = lastGame.round;
+        lastUpdatedGame.game = lastGame.game;
+
+        await updateBrackets(data);
+    }
+}
+
+async function handleRequestLeaderboard(socket) {
+    await checkForResultsUpdate();
+
+    socket.emit("send leaderboard", leaderboard);
+}
+
 async function handleGetMatchups(socket) {
     try {
         const matchups = JSON.parse(
@@ -445,7 +560,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("request leaderboard", () => {
-        socket.emit("send leaderboard", leaderboard);
+        handleRequestLeaderboard(socket);
     });
 
     socket.on("get matchups", () => {

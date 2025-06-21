@@ -1,25 +1,25 @@
 {
 	"round1": [
 		{
-			"name": "west", 
+			"name": "West", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": null
+			"team1Win": false
 		}, 
 		{
-			"name": "south", 
+			"name": "South", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": null
+			"team1Win": false
 		}, 
 		{
-			"name": "central", 
+			"name": "Central", 
 			"team1": "", 
 			"team2": "", 
-			"team1Win": null
+			"team1Win": false
 		}, 
 		{
-			"name": "east", 
+			"name": "East", 
 			"team1": "", 
 			"team2": "", 
 			"team1Win": null
@@ -27,25 +27,25 @@
 	], 
 	"round2": [
 		{
-			"name": "west", 
+			"name": "West", 
 			"team1": "", 
 			"team2": "?", 
 			"team1Win": null
 		}, 
 		{
-			"name": "south", 
+			"name": "South", 
 			"team1": "", 
 			"team2": "?", 
 			"team1Win": null
 		}, 
 		{
-			"name": "central", 
+			"name": "Central", 
 			"team1": "", 
 			"team2": "?", 
 			"team1Win": null
 		}, 
 		{
-			"name": "east", 
+			"name": "East", 
 			"team1": "", 
 			"team2": "?", 
 			"team1Win": null
@@ -53,13 +53,13 @@
 	], 
 	"round3": [
 		{
-			"name": "west south", 
+			"name": "West South", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null
 		}, 
 		{
-			"name": "central east", 
+			"name": "Central East", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null
@@ -67,7 +67,7 @@
 	], 
 	"round4": [
 		{
-			"name": "championship", 
+			"name": "Championship", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null
