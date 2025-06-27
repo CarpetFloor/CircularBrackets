@@ -46,14 +46,16 @@ button {
 .header {
 	position: fixed;
 	margin: 0;
-	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 	background-color: var(--lightGrey);
-	box-sizing: border-box;
-	padding-right: 5vw;
-	height: 2.5em;
+	width: 100vw;
+	height: 2.75em;
+	margin-top: -0.5em;
+	margin-left: -2em;
+	padding-right: 2em;
+	padding-top: 0.7em;
 }
 .header button {
 	background-color: var(--purple);
@@ -63,20 +65,80 @@ button {
 	flex-direction: row;
 }
 .header .mainButton {
-	width: fit-content;
+	display: flex;
+	flex-direction: row;
+	height: 2em;
+	width: 6.5em;
+	justify-content: space-between;
+	align-items: center;
+}
+.header #hamburgerClose {
+	display: none;
+	width: 1.25em;
+	flex-direction: row;
+	justify-content: center;
+}
+.header .hamburger {
+	width: 1.25em;
+	height: 1.25em;
+	display: flex;
+	flex-direction: column;
+	margin-top: -0.25em;
+}
+.header .hamburger div {
+	width: 100%;
+	height: 33%;
+	border-bottom: 2px solid white;
 }
 .header .popup {
 	display: none;
-	background-color: var(--grey);
-	width: 10em;
-	height: 10em;
+	position: absolute;
+	background-color: var(--lightGrey);
+	width: 12em;
+	height: 4em;
+	margin: 0;
+	margin-right: -1.5em;
+	margin-top: 2.75em;
+	padding-top: 1em;
+	box-shadow: -2px 2px 2px var(--grey);
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
+}
+.header .popup .buttons {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: fit-content;
+	justify-content: space-evenly;
 }
 .header .popup .enterInfo {
 	display: none;
 	flex-direction: column;
+	padding-top: 2em;
+	width: 90%;
+}
+.header .popup .enterInfo .closeHeaderPopup {
+	position: absolute;
+	margin-top: -2.5em;
+	right: 0;
+    margin-right: 0.5em;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--red);
 }
 .header .popup .enterInfo input {
 	margin-bottom: 0.5em;
+    border: 2px solid transparent;
+    padding: 0.5em;
+    box-shadow: 0 2px 2px var(--grey);
+}
+.header .popup .enterInfo .submit {
+	margin-top: 1.5em;
 }
 
 .main {
@@ -102,6 +164,7 @@ button {
 	flex-direction: row;
 	justify-content: space-evenly;
 	width: 100%;
+	padding-bottom: 1em;
 }
 #bracketDeadline .timeSections div {
 	display: flex;

@@ -1,4 +1,8 @@
 activeScripts.push(() => {
+	const colors = {
+		error: "#f06292"
+	};
+
 	const popupButton = document.querySelector(".mainButton");
 	const popup = document.querySelector("div.popup");
 
@@ -9,9 +13,15 @@ activeScripts.push(() => {
 
 		if(popupOpen) {
 			popup.style.display = "flex";
+
+			document.querySelector("#hamburgerOpen").style.display = "none";
+			document.querySelector("#hamburgerClose").style.display = "flex";
 		}
 		else {
 			popup.style.display = "none";
+
+			document.querySelector("#hamburgerOpen").style.display = "flex";
+			document.querySelector("#hamburgerClose").style.display = "none";
 		}
 	});
 
@@ -21,15 +31,35 @@ activeScripts.push(() => {
 	const signupInputs = document.querySelector(".signupInputs");
 	const buttons = document.querySelector(".buttons");
 
+	const closeHeaderPopupButtons = document.querySelectorAll(".closeHeaderPopup");
+	for(let b of closeHeaderPopupButtons) {
+		b.addEventListener("click", () => {
+			loginInputs.style.display = "none";
+			signupInputs.style.display = "none";
+
+			buttons.style.display = "flex";
+
+			document.querySelector(".popup").style.height = "4em";
+		});
+	}
+
 	signupButton.addEventListener("click", () => {
 		buttons.style.display = "none";
 		loginInputs.style.display = "none";
 
 		signupInputs.style.display = "flex";
+
+		document.querySelector(".popup").style.height = "12em";
 	});
 
 	const requestSignup = document.querySelector("#requestSignup");
 	requestSignup.addEventListener("click", () => {
+		const inputs = signupInputs.querySelectorAll("input");
+		
+		for(let input of inputs) {
+			input.style.borderColor = "transparent";
+		}
+
 		usernameEntered = document.querySelector("#signupUsername").value;
 		const passwordEntered = document.querySelector("#signupPassword").value;
 		
@@ -41,14 +71,19 @@ activeScripts.push(() => {
 
 	socketListeners.push("signup failed");
 	socket.on("signup failed", (reason) => {
-		window.alert(`Signup failed: ${reason}`);
+		window.setTimeout(() => {
+			const inputs = signupInputs.querySelectorAll("input");
+
+			for(let input of inputs) {
+				input.style.borderColor = colors.error;
+			}
+		}, 200);
 	});
 
 	socketListeners.push("signup success");
 	socket.on("signup success", () => {
-		window.alert("Successfully created account!");
-
 		localStorage.setItem("loggedIn", usernameEntered);
+		
 		loadPage("user home");
 	});
 
@@ -60,10 +95,18 @@ activeScripts.push(() => {
 		signupInputs.style.display = "none";
 
 		loginInputs.style.display = "flex";
+
+		document.querySelector(".popup").style.height = "12em";
 	});
 
 	const requestLogin = document.querySelector("#requestLogin");
 	requestLogin.addEventListener("click", () => {
+		const inputs = loginInputs.querySelectorAll("input");
+		
+		for(let input of inputs) {
+			input.style.borderColor = "transparent";
+		}
+
 		usernameEntered = document.querySelector("#loginUsername").value;
 		const passwordEntered = document.querySelector("#loginPassword").value;
 		
@@ -75,14 +118,19 @@ activeScripts.push(() => {
 
 	socketListeners.push("login failed");
 	socket.on("login failed", (reason) => {
-		window.alert(`Login failed: ${reason}`);
+		window.setTimeout(() => {
+			const inputs = loginInputs.querySelectorAll("input");
+
+			for(let input of inputs) {
+				input.style.borderColor = colors.error;
+			}
+		}, 200);
 	});
 
 	socketListeners.push("login success");
 	socket.on("login success", () => {
-		window.alert("Successfully logged into account!");
-
 		localStorage.setItem("loggedIn", usernameEntered);
+		
 		loadPage("user home");
 	});
 

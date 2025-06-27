@@ -23,9 +23,9 @@
 	[]View user's bracket (add indicator for which team was chosen)
 	[]View user's bracket open and close animation
 	[]View user's bracket page navigation animation
-	[]Add close button to login and signup sections of popup to go back to login/ signup options
-	[]Guest home popup styling
-	[]Gues home popup open and close animation
+	[+]Add close button to login and signup sections of popup to go back to login/ signup options
+	[+]Guest home popup styling
+	[]Guest home popup open and close animation
 	[]Page loading animation
 	[]Remove alerts
 	[]Copy bracket deadline from guest home to user home

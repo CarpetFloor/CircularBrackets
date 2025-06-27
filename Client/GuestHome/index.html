@@ -1,5 +1,13 @@
 <div class="header">
-    <button class="mainButton">Account</button>
+    <button class="mainButton">
+        <div id="hamburgerOpen" class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <p id="hamburgerClose">X</p>
+        <p class="hamburgerText">Account</p>
+    </button>
 
     <div class="popup">
         <div class="buttons">
@@ -8,17 +16,21 @@
         </div>
 
         <div class="enterInfo signupInputs">
+            <button class="closeHeaderPopup">X</button>
+
             <input id="signupUsername" type="text" placeholder="username">
             <input id="signupPassword" type="password" placeholder="password">
 
-            <button id="requestSignup">Signup!</button>
+            <button id="requestSignup" class="submit">Signup!</button>
         </div>
 
         <div class="enterInfo loginInputs">
+            <button class="closeHeaderPopup">X</button>
+
             <input id="loginUsername" type="text" placeholder="username">
             <input id="loginPassword" type="password" placeholder="password">
 
-            <button id="requestLogin">Login!</button>
+            <button id="requestLogin" class="submit">Login!</button>
         </div>
     </div>
 </div>
