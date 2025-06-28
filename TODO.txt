@@ -31,8 +31,8 @@
 	[+]Copy bracket deadline from guest home to user home
 	[+]User home popup (with saying "welcome, ")
 	[+]Fix user home navbar not being tall enough
-	[]Fix create bracket body being able to scroll (causes elements to go up into nav bar - and only the bracket div should be scrollable)
-	[]Create bracket styling
+	[+]Fix create bracket body being able to scroll (causes elements to go up into nav bar - and only the bracket div should be scrollable)
+	[+]Create bracket styling
 	[]Create bracket page navigation animation
 []Make sure everything looks good on computers
 []HTTPS

@@ -16,6 +16,12 @@ activeScripts.push(() => {
 		);
 
 		document.querySelector("#loginNoticeContainer").innerHTML = `<button id="createBracketButton">Create Bracket</button>`;
+		document.querySelector("#createBracketButton").addEventListener(
+			"click", 
+			() => {
+				loadPage("create bracket");
+			}
+		);
 
 		socket.emit("request bracket exist check", loggedInCheck);
 

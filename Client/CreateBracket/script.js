@@ -1,25 +1,12 @@
 activeScripts.push(() => {
-	const updateMap = new Map();
-
-	document.querySelector("#usernameDisplay").innerText += 
-		" " + 
-		localStorage.getItem("loggedIn")
-	;
-
-	document.querySelector("#logoutButton").addEventListener(
-		"click", 
-		() => {
-			localStorage.setItem("loggedIn", null);
-			loadPage("guest home");
-		}
-	);
-
 	document.querySelector("#goBackButton").addEventListener(
 		"click", 
 		() => {
-			loadPage("user home");
+			loadPage("home");
 		}
 	);
+
+	const updateMap = new Map();
 
 	socket.emit("get matchups");
 
@@ -133,6 +120,7 @@ activeScripts.push(() => {
 			"click", 
 			() => {
 				previousRound();
+				document.querySelector(".bracket").scrollTop = 0;
 			}
 		);
 
@@ -140,6 +128,7 @@ activeScripts.push(() => {
 			"click", 
 			() => {
 				nextRound();
+				document.querySelector(".bracket").scrollTop = 0;
 			}
 		);
 

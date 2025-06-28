@@ -1,34 +1,65 @@
-body {
-	overflow-x: hidden;
-}
-h1 {
+#roundTitle {
 	margin: 0;
-	margin-top: 4vh;
+	margin-top: 0.5em;
 }
+
 .bracket {
 	display: flex;
 	flex-direction: row;
 	width: 95vw;
 	overflow: hidden;
-	max-height: 70vh;
+	max-height: 58vh;
 	overflow-y: auto;
 	display: none;
+	padding-top: 2em;
+	background-color: var(--lightGrey);
+	margin-left: auto;
+	margin-right: auto;
 }
 .bracket .roundContainer .round {
 	display: flex;
 	flex-direction: column;
-	width: 95vw;
+	width: 93vw;
 	margin: 0;
+	padding-left: 2vw;
 }
 .bracket .roundContainer .round .game {
 	display: flex;
 	flex-direction: column;
 	margin: 0;
+	margin-bottom: 2em;
+}
+.bracket .roundContainer .round .game .title {
+	font-weight: bold;
+	font-size: 1.2em;
+	margin-top: 0;
+	margin-bottom: 0.5em;
 }
 .bracket .roundContainer .round .game .teamSelect {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 3vh;
+	border: 2px solid var(--grey);
+	width: 13.5em;
+	height: 2em;
+	align-items: center;
+	margin-bottom: -0.1em;
+	border-radius: 5px;
+}
+.bracket .roundContainer .round .game .teamSelect label {
+	/*background-color: black;*/
+	width: 100%;
+}
+.bracket .roundContainer .round .game .teamSelect input {
+	opacity: 0;
+}
+.bracket .roundContainer .round .game .teamSelect:has(input:checked) {
+	border-color: var(--purple);
+	z-index: 1;
+}
+#submitBracketButton {
+	background-color: var(--purple);
+    width: 90%;
+    align-self: center;
 }
 
 .navControls {
@@ -38,8 +69,12 @@ h1 {
 	justify-content: space-between;
 	margin-left: auto;
 	margin-right: auto;
+	margin: 0;
+	margin-top: 1em;
+	margin-left: auto;
+	margin-right: auto;
 }
-#navBackButton {
-	opacity: 0;
-	user-select: none;
+.navControls button {
+	width: 2.5em;
+	height: 2.5em;
 }
