@@ -1,5 +1,9 @@
+#goBackButton, #roundTitle {
+	margin-left: 20px;
+}
+
 #roundTitle {
-	margin: 0;
+	margin-bottom: 0;
 	margin-top: 0.5em;
 }
 
@@ -44,6 +48,7 @@
 	align-items: center;
 	margin-bottom: -0.1em;
 	border-radius: 5px;
+	transition: border-color var(--animSpeed);
 }
 .bracket .roundContainer .round .game .teamSelect label {
 	/*background-color: black;*/
@@ -77,4 +82,8 @@
 .navControls button {
 	width: 2.5em;
 	height: 2.5em;
+	transition: background-color var(--animSpeed);
+}
+.navControls button:hover {
+	background-color: var(--purple);
 }

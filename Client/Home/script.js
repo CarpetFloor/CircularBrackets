@@ -15,7 +15,7 @@ activeScripts.push(() => {
 			}
 		);
 
-		document.querySelector("#loginNoticeContainer").innerHTML = `<button id="createBracketButton">Create Bracket</button>`;
+		document.querySelector("#loginNoticeContainer").innerHTML = `<button id="createBracketButton" class="simpleButtonHover">Create Bracket</button>`;
 		document.querySelector("#createBracketButton").addEventListener(
 			"click", 
 			() => {
@@ -33,6 +33,8 @@ activeScripts.push(() => {
 				document.querySelector("#bracketDeadline").style.display = "none";
 			}
 		);
+
+		document.title += " - Logged In";
 	}
 
 	const colors = {

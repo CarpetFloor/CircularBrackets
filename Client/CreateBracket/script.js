@@ -198,6 +198,7 @@ activeScripts.push(() => {
 
 				const button = document.createElement("button");
 				button.id = "submitBracketButton";
+				button.className = "simpleButtonHover";
 				button.innerText = "Submit";
 
 				document.querySelector("#lastRound").appendChild(button);
