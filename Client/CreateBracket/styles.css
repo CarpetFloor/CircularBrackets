@@ -1,5 +1,5 @@
 #goBackButton, #roundTitle {
-	margin-left: 20px;
+	margin-left: 15px;
 }
 
 #roundTitle {
@@ -12,13 +12,16 @@
 	flex-direction: row;
 	width: 95vw;
 	overflow: hidden;
-	max-height: 58vh;
+	max-height: 54vh;
 	overflow-y: auto;
 	display: none;
 	padding-top: 2em;
 	background-color: var(--lightGrey);
 	margin-left: auto;
 	margin-right: auto;
+}
+.bracket .roundContainer {
+	transition: margin-left 0.5s;
 }
 .bracket .roundContainer .round {
 	display: flex;
@@ -65,6 +68,7 @@
 	background-color: var(--purple);
     width: 90%;
     align-self: center;
+    margin-left: -2vw;
 }
 
 .navControls {

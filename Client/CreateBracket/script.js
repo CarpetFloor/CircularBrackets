@@ -1,11 +1,4 @@
 activeScripts.push(() => {
-	document.querySelector("#goBackButton").addEventListener(
-		"click", 
-		() => {
-			loadPage("home");
-		}
-	);
-
 	const updateMap = new Map();
 
 	socket.emit("get matchups");
@@ -64,7 +57,6 @@ activeScripts.push(() => {
 
 		setupBracket();
 
-		let marginLeft = 0;
 		let round = 0;
 		const maxRound = 3;
 
@@ -81,10 +73,10 @@ activeScripts.push(() => {
 			}
 
 			if(round > 0) {
-				marginLeft += 95;
-				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
-
 				--round;
+				firstRoundContainer.className = "roundContainer";
+				firstRoundContainer.classList.add(`scrollPage${round}`);
+				document.querySelector(".bracket").scrollTop = 0;
 
 				updateTitle();
 
@@ -102,10 +94,10 @@ activeScripts.push(() => {
 			}
 
 			if(round < maxRound) {
-				marginLeft -= 95;
-				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
-
 				++round;
+				firstRoundContainer.className = "roundContainer";
+				firstRoundContainer.classList.add(`scrollPage${round}`);
+				document.querySelector(".bracket").scrollTop = 0;
 
 				updateTitle();
 
@@ -317,6 +309,13 @@ activeScripts.push(() => {
 
 		addMatchupListeners();
 	});
+
+	document.querySelector("#goBackButton").addEventListener(
+		"click", 
+		() => {
+			window.location.reload();
+		}
+	);
 });
 
 activeScripts.at(-1)();

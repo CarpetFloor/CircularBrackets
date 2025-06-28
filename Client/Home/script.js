@@ -11,7 +11,7 @@ activeScripts.push(() => {
 			"click", 
 			() => {
 				localStorage.removeItem("loggedIn");
-				loadPage("home");
+				window.location.reload();
 			}
 		);
 
@@ -122,7 +122,7 @@ activeScripts.push(() => {
 	socket.on("signup success", () => {
 		localStorage.setItem("loggedIn", usernameEntered);
 		
-		loadPage("home");
+		window.location.reload();
 	});
 
 	const loginButton = document.querySelector("#loginButton");
@@ -169,7 +169,7 @@ activeScripts.push(() => {
 	socket.on("login success", () => {
 		localStorage.setItem("loggedIn", usernameEntered);
 		
-		loadPage("home");
+		window.location.reload();
 	});
 
 	function updateTime() {
@@ -302,7 +302,6 @@ activeScripts.push(() => {
 			document.querySelector(".bracketView").style.display = "flex";
 		});
 
-		let marginLeft = 0;
 		let round = 0;
 		const maxRound = 3;
 
@@ -319,10 +318,10 @@ activeScripts.push(() => {
 			}
 
 			if(round > 0) {
-				marginLeft += 95;
-				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
-
 				--round;
+				firstRoundContainer.className = "roundContainer";
+				firstRoundContainer.classList.add(`scrollPage${round}`);
+				document.querySelector(".bracket").scrollTop = 0;
 
 				updateTitle();
 
@@ -340,10 +339,11 @@ activeScripts.push(() => {
 			}
 
 			if(round < maxRound) {
-				marginLeft -= 95;
-				firstRoundContainer.style.marginLeft = `${marginLeft}vw`;
-
 				++round;
+				firstRoundContainer.className = "roundContainer";
+				firstRoundContainer.classList.add(`scrollPage${round}`);
+				document.querySelector(".bracket").scrollTop = 0;
+
 
 				updateTitle();
 

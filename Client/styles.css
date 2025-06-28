@@ -34,6 +34,7 @@ button {
 	color: white;
 	padding: 0.5em;
 	border-radius: var(--radius);
+	outline: none;
 }
 button:hover {
 	cursor: pointer;
@@ -321,16 +322,32 @@ button:hover {
 	flex-direction: row;
 	width: 95vw;
 	overflow: hidden;
-	max-height: 54vh;
+	max-height: 50vh;
 	overflow-y: auto;
 }
 /*.bracketView .bracket .roundContainer {
 	box-shadow: 0 5px 5px var(--grey);
 }*/
+.bracketView .bracket .roundContainer {
+	transition: margin-left 0.5s;
+}
+.scrollPage0 {
+	margin-left: 0;
+}
+.scrollPage1 {
+	margin-left: -95vw;
+}
+.scrollPage2 {
+	margin-left: -190vw;
+}
+.scrollPage3 {
+	margin-left: -285vw;
+}
 .bracketView .bracket .roundContainer .round {
 	display: flex;
 	flex-direction: column;
 	width: 95vw;
+	min-height: 54vh;
 	margin: 0;
 	background-color: #f8f9f9;
 	box-sizing: border-box;
