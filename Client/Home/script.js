@@ -1,4 +1,34 @@
 activeScripts.push(() => {
+	const loggedInCheck = localStorage.getItem("loggedIn");
+	if(loggedInCheck !== null) {
+		document.querySelector("#accountHamburger").style.display = "none";
+		document.querySelector("#logoutButton").style.display = "flex";
+
+		document.querySelector("#welcomeMessage").style.display = "flex";
+		document.querySelector("#welcomeMessage").innerText += ` ${loggedInCheck}`;
+
+		document.querySelector("#logoutButton").addEventListener(
+			"click", 
+			() => {
+				localStorage.removeItem("loggedIn");
+				loadPage("home");
+			}
+		);
+
+		document.querySelector("#loginNoticeContainer").innerHTML = `<button id="createBracketButton">Create Bracket</button>`;
+
+		socket.emit("request bracket exist check", loggedInCheck);
+
+		socketListeners.push("send bracket exists");
+		socket.on(
+			"send bracket exists", 
+			() => {
+				document.querySelector("#loginNoticeContainer").innerHTML = `<p>You have already created a bracket</p>`;
+				document.querySelector("#bracketDeadline").style.display = "none";
+			}
+		);
+	}
+
 	const colors = {
 		error: "#f06292"
 	};
@@ -84,7 +114,7 @@ activeScripts.push(() => {
 	socket.on("signup success", () => {
 		localStorage.setItem("loggedIn", usernameEntered);
 		
-		loadPage("user home");
+		loadPage("home");
 	});
 
 	const loginButton = document.querySelector("#loginButton");
@@ -131,7 +161,7 @@ activeScripts.push(() => {
 	socket.on("login success", () => {
 		localStorage.setItem("loggedIn", usernameEntered);
 		
-		loadPage("user home");
+		loadPage("home");
 	});
 
 	function updateTime() {
@@ -184,6 +214,8 @@ activeScripts.push(() => {
 			points.innerText = user.points;
 			div.appendChild(points);
 
+			const currentPoints = user.points;
+
 			document.querySelector(".leaderboard").appendChild(div);
 
 			div.addEventListener("click", () => {
@@ -191,6 +223,10 @@ activeScripts.push(() => {
 					"request bracket user data", 
 					username.textContent
 				);
+
+				document.querySelector("#points").innerText = `${currentPoints} points`;
+
+				document.querySelector("p.username").innerText = `${username.textContent}'s Bracket`;
 			});
 		}
 
@@ -233,9 +269,13 @@ activeScripts.push(() => {
 							// correct value is null when initialized, indicating that game hasn't happened
 							if(gameValue.correct === true) {
 								teamElems[predictionIndex].parentElement.parentElement.classList.add("correct");
+								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
 							}
 							else if(gameValue.correct === false) {
 								teamElems[predictionIndex].parentElement.parentElement.classList.add("incorrect");
+								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
+
+								teamElems[predictionIndex].parentElement.parentElement.children[0].children[0].textContent = "x";
 							}
 
 							teamElems[overIndex].parentElement.parentElement.className = "teamContainer";

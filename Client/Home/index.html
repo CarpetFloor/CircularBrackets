@@ -1,7 +1,40 @@
 <div class="header">
-    <div class="horizontal">
-        <p id="usernameDisplay">Welcome,</p>
-        <button id="logoutButton">Logout</button>
+    <p id="welcomeMessage">Welcome back </p>
+    <button id="logoutButton">Logout</button>
+
+    <button id="accountHamburger" class="mainButton">
+        <div id="hamburgerOpen" class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <p id="hamburgerClose">X</p>
+        <p class="hamburgerText">Account</p>
+    </button>
+
+    <div class="popup">
+        <div class="buttons">
+            <button id="loginButton">Login</button>
+            <button id="signupButton">Signup</button>
+        </div>
+
+        <div class="enterInfo signupInputs">
+            <button class="closeHeaderPopup">X</button>
+
+            <input id="signupUsername" type="text" placeholder="username">
+            <input id="signupPassword" type="password" placeholder="password">
+
+            <button id="requestSignup" class="submit">Signup!</button>
+        </div>
+
+        <div class="enterInfo loginInputs">
+            <button class="closeHeaderPopup">X</button>
+
+            <input id="loginUsername" type="text" placeholder="username">
+            <input id="loginPassword" type="password" placeholder="password">
+
+            <button id="requestLogin" class="submit">Login!</button>
+        </div>
     </div>
 </div>
 
@@ -10,6 +43,7 @@
         <button id="closeBracketViewButton">X</button>
 
         <p class="username">Username's Bracket</p>
+        <p id="points">-1 points</p>
 
         <h1 id="roundTitle">Round 1</h1>
         
@@ -22,7 +56,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -31,7 +65,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -44,7 +78,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -53,7 +87,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -66,7 +100,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -75,7 +109,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -88,7 +122,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -97,7 +131,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -116,7 +150,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -125,7 +159,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -138,7 +172,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -147,7 +181,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -160,7 +194,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -169,7 +203,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -182,7 +216,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -191,7 +225,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -210,7 +244,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -219,7 +253,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -232,7 +266,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -241,7 +275,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -260,7 +294,7 @@
 
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 1</p>
                             </div>
 
@@ -269,7 +303,7 @@
                         
                         <div class="teamContainer">
                             <div class="outline">
-                                <button>Img</button>
+                                <p class="resultIcon">+</p>
                                 <p class="name">Team 2</p>
                             </div>
 
@@ -289,11 +323,31 @@
 
     </div>
 
-    <h1>Welcome Back to Circular Brackets</h1>
-    
-    <p id="bracketDeadline"></p>
+    <h1>Circular Brackets</h1>
+    <div id="loginNoticeContainer">
+        <p style="font-weight: bold;">Please login to create a bracket</p>
+    </div>
 
-    <div id="createBracketContainer"></div>
+    <div id="bracketDeadline">
+        <p class="heading">Time left to create a bracket:</p>
+
+        <div class="timeSections">
+            <div>
+                <p class="number"></p>
+                <p class="text">days</p>
+            </div>
+
+            <div>
+                <p class="number"></p>
+                <p class="text">hours</p>
+            </div>
+
+            <div>
+                <p class="number"></p>
+                <p class="text">minutes</p>
+            </div>
+        </div>
+    </div>
 
     <div class="leaderboard">
         <p class="heading">Leaderboard</p>

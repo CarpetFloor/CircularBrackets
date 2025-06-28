@@ -14,19 +14,11 @@ class Page {
 
 const pages = [
 	new Page(
-		"guest home", 
+		"home", 
 		"Circular Brackets", 
-		"/GuestHome/index.html", 
+		"/Home/index.html", 
 		[], 
-		["/GuestHome/script.js"]
-	), 
-
-	new Page(
-		"user home", 
-		"Circular Brackets - Logged In", 
-		"/UserHome/index.html", 
-		[], 
-		["/UserHome/script.js"]
+		["/Home/script.js"]
 	), 
 
 	new Page(
@@ -152,13 +144,7 @@ window.onload = () => {
 			const loggedInCheck = localStorage.getItem("loggedIn");
 			socket.emit("check logged in", loggedInCheck);
 
-			socket.on("not logged in", (loggedIn) => {
-				loadPage("guest home");
-			});
-
-			socket.on("logged in", () => {
-				loadPage("user home");
-			});
+			loadPage("home");
 
 			window.setInterval(() => {
 				document.body.style.opacity = "1";

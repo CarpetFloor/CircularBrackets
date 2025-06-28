@@ -361,6 +361,8 @@ async function updateBrackets(resultsData) {
                 user, 
                 JSON.stringify(userData)
             );
+
+            await getLeaderbaord();
         }
     }
 }
@@ -492,6 +494,41 @@ async function handleRequestBracketUserData(socket, username) {
     }
 }
 
+async function handleRequestBracketExistCheck(socket, username) {
+    try {
+        const directory = path.join(__dirname, "/Data/User");
+        const files = await fs.readdir(directory);
+
+        const userFiles = files
+            .map(fileName => {
+                return path.join(directory, fileName);
+            })
+            .filter(isFile)
+        ;
+
+        for(let file of userFiles) {
+            const data = JSON.parse(await fs.readFile(
+                file, 
+                "utf8"
+            ));
+
+            if(
+                (data.username == username) && 
+                (data.bracket !== null)
+            ) {
+                socket.emit("send bracket exists");
+
+                return;
+            }
+        }
+    }
+    catch(error) {
+        console.log((new Date()).toString());
+        console.log("\tERROR getting user bracket data:");
+        console.log(`\t${error.message}`);
+    }
+}
+
 async function getLeaderbaord() {
     leaderboard = [];
 
@@ -578,6 +615,10 @@ io.on("connection", (socket) => {
     socket.on("request bracket user data", (username) => {
         handleRequestBracketUserData(socket, username);
     });
+
+    socket.on("request bracket exist check", (username) => {
+        handleRequestBracketExistCheck(socket, username);
+    })
 });
 
 // start server
