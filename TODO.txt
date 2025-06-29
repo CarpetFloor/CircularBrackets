@@ -17,11 +17,11 @@
 [+]View individual bracket on user home
 [+]Update bracket results and points
 [+]Client-side request when loading logged-in home for server to check if player brackets need to be updated
-[]Website UI and UX to actually look and feel complete
+[+]Website UI and UX to actually look and feel complete
 	[+]Make sure user's bracket view shows actually username
 	[+]Add points to user's bracket view
 	[+]View user's bracket (add indicator for which team was chosen)
-	[]View user's bracket page navigation animation
+	[+]View user's bracket page navigation animation
 	[+]Add close button to login and signup sections of popup to go back to login/ signup options
 	[+]Guest home popup styling
 	[+]Remove alerts
@@ -30,8 +30,8 @@
 	[+]Fix user home navbar not being tall enough
 	[+]Fix create bracket body being able to scroll (causes elements to go up into nav bar - and only the bracket div should be scrollable)
 	[+]Create bracket styling
-	[]Create bracket page navigation animation
+	[+]Create bracket page navigation animation
 [+]Make sure everything looks good on computers
-[]HTTPS
 []Hosting
 []Domain
+[]HTTPS

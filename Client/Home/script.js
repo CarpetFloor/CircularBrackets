@@ -172,6 +172,8 @@ activeScripts.push(() => {
 		window.location.reload();
 	});
 
+	let reachedDeadline = false;
+
 	function updateTime() {
 		if(diff > 0) {
 			const parent = document.querySelector("#bracketDeadline");
@@ -186,24 +188,31 @@ activeScripts.push(() => {
 			const minutesElem = children[2].children[0];
 			minutesElem.innerText = minutesDiff.toFixed(0);
 		}
-		else {
-			const elem = document.querySelector("#bracketDeadline");
-			
-			elem.innerText = "Deadline to create bracket is over";
-			
-			elem.style.backgroundColor = "black";
-			elem.style.color = "white";
-			elem.style.padding = "0.5em";
-			elem.style.fontWeight = "bold";
+		else if(!(reachedDeadline)){
+			window.setTimeout(() => {
+				reachedDeadline = true;
+				const container = document.querySelector("#bracketDeadline");
+				container.querySelector(".timeSections").style.display = "none";
+				container.style.boxShadow = "none";
+
+				const heading = container.querySelector(".heading");
+				heading.innerText = "Deadline to create bracket is over";
+				heading.style.fontWeight = "bold";
+
+				const noticeContainer = document.querySelector("#loginNoticeContainer");
+				const createBracketButton = noticeContainer.querySelector("button");
+				if(createBracketButton !== null) {
+					noticeContainer.style.display = "none";
+				}
+			}, 250);
 		}
 	}
 
 	updateTime();
-	const interval = window.setInterval(() => {
+	const timeInterval = window.setInterval(() => {
 		updateTime();
 	}, 1000 * 30);
-
-	intervals.push(interval);
+	intervals.push(timeInterval);
 
 	socket.emit("request leaderboard");
 
@@ -258,7 +267,21 @@ activeScripts.push(() => {
 				) {
 					for(let game of roundElem.querySelectorAll(".game")) {
 
-						const nameCheck = game.querySelector(".title").textContent;
+						let nameCheck = game.querySelector(".title").textContent;
+
+						switch(nameCheck) {
+							case "Game 1":
+								nameCheck = "Championship Weekend Game 1";
+								break;
+
+							case "Game 2":
+								nameCheck = "Championship Weekend Game 2";
+								break;
+
+							case "Finals":
+								nameCheck = "Championship Finals";
+								break;
+						}
 
 						if(nameCheck == gameValue.name) {
 							const teamElems = game.querySelectorAll(".name");
@@ -308,7 +331,20 @@ activeScripts.push(() => {
 		const firstRoundContainer = document.querySelector("#firstRound");
 
 		function updateTitle() {
-			document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`
+			switch(round) {
+				case 0:
+				case 1:
+					document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`;
+					break;
+				
+				case 2:
+					document.querySelector("#roundTitle").innerText = `Champ. Weekend`;
+					break;
+				
+				case 3:
+					document.querySelector("#roundTitle").innerText = `Champ. Finals`;
+					break;
+			}
 		}
 
 		function previousRound() {

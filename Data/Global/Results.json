@@ -53,13 +53,13 @@
 	], 
 	"round3": [
 		{
-			"name": "West South", 
+			"name": "Championship Weekend Game 1", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null
 		}, 
 		{
-			"name": "Central East", 
+			"name": "Championship Weekend Game 1", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null
@@ -67,7 +67,7 @@
 	], 
 	"round4": [
 		{
-			"name": "Championship", 
+			"name": "Championship Finals", 
 			"team1": "?", 
 			"team2": "?", 
 			"team1Win": null

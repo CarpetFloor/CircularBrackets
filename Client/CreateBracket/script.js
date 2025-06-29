@@ -63,7 +63,20 @@ activeScripts.push(() => {
 		const firstRoundContainer = document.querySelector("#firstRound");
 
 		function updateTitle() {
-			document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`
+			switch(round) {
+				case 0:
+				case 1:
+					document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`;
+					break;
+				
+				case 2:
+					document.querySelector("#roundTitle").innerText = `Champ. Weekend`;
+					break;
+				
+				case 3:
+					document.querySelector("#roundTitle").innerText = `Champ. Finals`;
+					break;
+			}
 		}
 
 		function previousRound() {
@@ -222,6 +235,20 @@ activeScripts.push(() => {
 								else {
 									otherTeam = input.nextElementSibling.textContent;
 								}
+							}
+
+							switch(gameName) {
+								case "Game 1":
+									gameName = "Championship Weekend Game 1";
+									break;
+
+								case "Game 2":
+									gameName = "Championship Weekend Game 2";
+									break;
+
+								case "Finals":
+									gameName = "Championship Finals";
+									break;
 							}
 
 							roundData.push(

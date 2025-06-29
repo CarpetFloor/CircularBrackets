@@ -319,8 +319,6 @@ async function updateBrackets(resultsData) {
         .filter(isFile)
     ;
 
-    console.log((new Date()).toString());
-    console.log("Updating brackets");
     for(const user of users) {
         const userData = JSON.parse(await fs.readFile(user));
 
@@ -362,7 +360,7 @@ async function updateBrackets(resultsData) {
                 JSON.stringify(userData)
             );
 
-            await getLeaderbaord();
+            await getLeaderboard();
         }
     }
 }
@@ -429,6 +427,8 @@ async function handleSendBracket(socket, username, bracket) {
             `Data/User/${username}.json`, 
             JSON.stringify(userData)
         );
+
+        await getLeaderboard();
     }
     catch(error) {
         console.log((new Date()).toString());
@@ -529,7 +529,7 @@ async function handleRequestBracketExistCheck(socket, username) {
     }
 }
 
-async function getLeaderbaord() {
+async function getLeaderboard() {
     leaderboard = [];
 
     try {
@@ -578,7 +578,7 @@ async function getLeaderbaord() {
 }
 
 let leaderboard = [];
-await getLeaderbaord();
+await getLeaderboard();
 
 // handle users
 io.on("connection", (socket) => {
