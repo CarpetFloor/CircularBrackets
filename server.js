@@ -1,13 +1,18 @@
 const express = require("express");
 const app = express();
-const http = require("http");
-const server = http.createServer(app);
+const https = require("https");
 const { Server } = require("socket.io");
-const io = new Server(server);
 
 const fs = require("fs").promises;
+const fsSync = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+
+const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
+const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
+const httpsServer = https.createServer(credentials, app);
+const io = new Server(httpsServer);
 
 let playoffTeams = null;
 
@@ -15,9 +20,6 @@ const bracketDeadline = new Date("July 21, 2025 00:00:00");
 
 // add static files
 app.use(express.static(__dirname + "/Client"));
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/index.html");
-});
 
 async function getKeyFile() {
     try {
@@ -624,9 +626,7 @@ io.on("connection", (socket) => {
 });
 
 // start server
-server.listen(3002, () => {
-  console.log("server started on http://localhost:3002");
-});
+httpsServer.listen(443, () => {console.log("Server running at https://www.circularbrackets.com");});
 }
 
 run();
