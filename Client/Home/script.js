@@ -242,8 +242,10 @@ activeScripts.push(() => {
 				);
 
 				document.querySelector("#points").innerText = `${currentPoints} points`;
-
 				document.querySelector("p.username").innerText = `${username.textContent}'s Bracket`;
+				while(round > 0) {
+					previousRound();
+				}
 			});
 		}
 

@@ -51,6 +51,12 @@ button:hover {
 	width: 100%;
 	height: 100%;
 }
+@media only screen and (min-width: 480px) {
+	#mainContent {
+		display: flex;
+		justify-content: center;	
+	}
+}
 
 #loadedScripts {
 	display: none;
@@ -64,7 +70,7 @@ button:hover {
 	align-items: flex-end;
 	background-color: var(--lightGrey);
 	width: 100vw;
-	height: 2.75em;
+	height: 3em;
 	margin-top: -0.5em;
 	margin-left: -2em;
 	padding-right: 2em;
@@ -81,6 +87,11 @@ button:hover {
 	max-width: 70vw;
 	white-space: nowrap;
 	overflow-x: auto;
+}
+@media only screen and (min-width: 480px) {
+	.header #welcomeMessage {
+		padding-left: 1em;
+	}
 }
 .header #logoutButton {
 	display: none;
@@ -188,6 +199,13 @@ button:hover {
 	flex-direction: column;
 	box-shadow: 0 5px 5px var(--lightGrey);
 }
+@media only screen and (min-width: 480px) {
+	#bracketDeadline {
+		max-width: 50vw;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
 #bracketDeadline .heading {
 	background-color: black;
 	color: white;
@@ -228,6 +246,11 @@ button:hover {
 	margin-top: 7vh;
 	align-items: center;
 }
+@media only screen and (min-width: 480px) {
+	.leaderboard {
+		width: 50vw;
+	}
+}
 .leaderboard .heading {
 	font-size: 1.5em;
 	font-weight: bold;
@@ -251,6 +274,11 @@ button:hover {
 	box-shadow: none;
 	border: 2px solid var(--purple);
 	z-index: 1;
+}
+@media only screen and (min-width: 480px) {
+	.leaderboard div {
+		width: 50vw;
+	}
 }
 .leaderboard div .username {
 	margin-left: 1em;
@@ -283,6 +311,13 @@ button:hover {
 	left: 2vw;
 	right: 2vw;
 	z-index: 2;
+}
+@media only screen and (min-width: 480px) {
+	.bracketView {
+		width: 50vw;
+		margin-left: auto;
+		margin-right: auto
+	}
 }
 .bracketView .username, .bracketView #points, .bracketView #roundTitle {
 	padding-left: 15px;
@@ -327,6 +362,11 @@ button:hover {
 	overflow: hidden;
 	max-height: 50vh;
 	overflow-y: auto;
+}
+@media only screen and (min-width: 480px) {
+	.bracketView .bracket {
+		width: 50vw;
+	}
 }
 /*.bracketView .bracket .roundContainer {
 	box-shadow: 0 5px 5px var(--grey);
@@ -427,6 +467,11 @@ button:hover {
 	margin-right: auto;
 	padding-top: 1em;
 	padding-bottom: 1em;
+}
+@media only screen and (min-width: 480px) {
+	.bracketView .navControls {
+		width: 40vw;
+	}
 }
 .bracketView .navControls button {
 	width: 2.5em;

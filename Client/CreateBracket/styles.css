@@ -1,11 +1,22 @@
 #goBackButton, #roundTitle {
 	margin-left: 15px;
 }
-
+@media only screen and (min-width: 480px) {
+	#goBackContainer {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+}
 #roundTitle {
 	font-size: 2.25em;
 	margin-bottom: 0;
 	margin-top: 0.5em;
+}
+@media only screen and (min-width: 480px) {
+	#roundTitle {
+		text-align: center;
+	}
 }
 
 .bracket {
@@ -20,6 +31,13 @@
 	background-color: var(--lightGrey);
 	margin-left: auto;
 	margin-right: auto;
+}
+@media only screen and (min-width: 480px) {
+	.bracket {
+		max-width: 50vw;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 .bracket .roundContainer {
 	transition: margin-left 0.5s;
@@ -71,6 +89,13 @@
     align-self: center;
     margin-left: -2vw;
 }
+@media only screen and (min-width: 480px) {
+	#submitBracketButton {
+		width: 45%;
+		margin-left: 2vw;
+		align-self: flex-start;
+	}
+}
 
 .navControls {
 	width: 70vw;
@@ -91,4 +116,8 @@
 }
 .navControls button:hover {
 	background-color: var(--purple);
+}
+.navControls #navBackButton {
+	opacity: 0;
+	pointer-events: none;
 }
