@@ -60,6 +60,20 @@ activeScripts.push(() => {
 
 			document.querySelector("#hamburgerOpen").style.display = "flex";
 			document.querySelector("#hamburgerClose").style.display = "none";
+
+			let inputs = signupInputs.querySelectorAll("input");
+			
+			for(let input of inputs) {
+				input.style.borderColor = "transparent";
+			}
+
+			inputs = loginInputs.querySelectorAll("input");
+			
+			for(let input of inputs) {
+				input.style.borderColor = "transparent";
+			}
+			
+			document.querySelector("#errorMessage").className = "";
 		}
 	});
 
@@ -78,6 +92,20 @@ activeScripts.push(() => {
 			buttons.style.display = "flex";
 
 			document.querySelector(".popup").style.height = "4em";
+
+			let inputs = signupInputs.querySelectorAll("input");
+			
+			for(let input of inputs) {
+				input.style.borderColor = "transparent";
+			}
+
+			inputs = loginInputs.querySelectorAll("input");
+			
+			for(let input of inputs) {
+				input.style.borderColor = "transparent";
+			}
+			
+			document.querySelector("#errorMessage").className = "";
 		});
 	}
 
@@ -101,6 +129,8 @@ activeScripts.push(() => {
 		usernameEntered = document.querySelector("#signupUsername").value;
 		const passwordEntered = document.querySelector("#signupPassword").value;
 		
+		document.querySelector("#errorMessage").className = "";
+		
 		socket.emit("request signup", {
 			username: usernameEntered, 
 			password: passwordEntered
@@ -115,6 +145,9 @@ activeScripts.push(() => {
 			for(let input of inputs) {
 				input.style.borderColor = colors.error;
 			}
+
+			document.querySelector("#errorMessage").innerText = reason;
+			document.querySelector("#errorMessage").className = "animate";
 		}, 200);
 	});
 
@@ -148,6 +181,8 @@ activeScripts.push(() => {
 		usernameEntered = document.querySelector("#loginUsername").value;
 		const passwordEntered = document.querySelector("#loginPassword").value;
 		
+		document.querySelector("#errorMessage").className = "";
+
 		socket.emit("request login", {
 			username: usernameEntered, 
 			password: passwordEntered
@@ -162,6 +197,9 @@ activeScripts.push(() => {
 			for(let input of inputs) {
 				input.style.borderColor = colors.error;
 			}
+
+			document.querySelector("#errorMessage").innerText = reason;
+			document.querySelector("#errorMessage").className = "animate";
 		}, 200);
 	});
 
