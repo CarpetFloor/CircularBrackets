@@ -80,6 +80,7 @@ function loadPage(name) {
 				.then((res) => {return res.text()})
 				.then((html) => {
 					content.innerHTML = html;
+					document.querySelector("#mainContent").className = "";
 
 					for(let script of page.scripts) {
 						const scriptEl = document.createElement("script");
@@ -94,6 +95,10 @@ function loadPage(name) {
 					}
 
 					document.body.style.backgroundColor = "white";
+					window.setInterval(() => {
+						document.body.style.opacity = "1";
+						document.querySelector("#mainContent").classList.add("loaded");
+					}, 250);
 				})
 			;
 			break;
@@ -145,10 +150,6 @@ window.onload = () => {
 			socket.emit("check logged in", loggedInCheck);
 
 			loadPage("home");
-
-			window.setInterval(() => {
-				document.body.style.opacity = "1";
-			}, 250);
 		});
 	});
 }
