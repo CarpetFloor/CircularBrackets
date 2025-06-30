@@ -183,6 +183,8 @@ async function createAccount(usernameInput, passwordInput, socket) {
             "utf8"
         );
 
+	await getLeaderboard();
+
         socket.emit("signup success");
     }
     catch(error) {
