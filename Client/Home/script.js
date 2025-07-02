@@ -373,16 +373,18 @@ activeScripts.push(() => {
 		function updateTitle() {
 			switch(round) {
 				case 0:
+					document.querySelector("#roundTitle").innerText = `Round 1`;
+					break;
 				case 1:
-					document.querySelector("#roundTitle").innerText = `Round ${(round + 1)}`;
+					document.querySelector("#roundTitle").innerText = `Divison Champ.`;
 					break;
 				
 				case 2:
-					document.querySelector("#roundTitle").innerText = `Champ. Weekend`;
+					document.querySelector("#roundTitle").innerText = `Semifinals`;
 					break;
 				
 				case 3:
-					document.querySelector("#roundTitle").innerText = `Champ. Finals`;
+					document.querySelector("#roundTitle").innerText = `Championship`;
 					break;
 			}
 		}
