@@ -234,7 +234,7 @@ activeScripts.push(() => {
 				container.style.boxShadow = "none";
 
 				const heading = container.querySelector(".heading");
-				heading.innerText = "Deadline to create bracket is over";
+				heading.innerText = "Playoffs have started!!!";
 				heading.style.fontWeight = "bold";
 
 				const noticeContainer = document.querySelector("#loginNoticeContainer");
