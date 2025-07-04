@@ -201,17 +201,16 @@ button:hover {
 	position: absolute;
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
 	justify-self: center;
 	margin-top: 11.5em;
 	width: 100vw;
-	right: 0;
 }
 @media only screen and (min-width: 480px) {
 	.header .popup #errorContainer {
 		left: 0;
 		right: 3em;
 		margin-top: 12em;
+		margin-left: -25%;		
 	}
 }
 .header .popup #errorContainer #errorMessage {
