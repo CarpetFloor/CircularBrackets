@@ -254,6 +254,8 @@ activeScripts.push(() => {
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
+		console.log("leaderboard");
+		console.log(leaderboard);
 		document.querySelector(".leaderboard").innerHTML = "";
 
 		const leaderboardSorted = [...leaderboard];
@@ -268,6 +270,17 @@ activeScripts.push(() => {
 			const username = document.createElement("p");
 			username.className = "username";
 			username.innerText = user.username;
+			username.id = user.username;
+
+			const loggedInCheck = localStorage.getItem("loggedIn");
+
+			if(loggedInCheck !== null) {
+				if(user.username == loggedInCheck) {
+					username.innerText = "You";
+					username.style.color = "var(--purple)";
+				}
+			}
+			
 			div.appendChild(username);
 
 			const points = document.createElement("p");
@@ -282,7 +295,7 @@ activeScripts.push(() => {
 			div.addEventListener("click", () => {
 				socket.emit(
 					"request bracket user data", 
-					username.textContent
+					username.id
 				);
 
 				document.querySelector("#points").innerText = `${currentPoints} points`;
