@@ -299,7 +299,17 @@ activeScripts.push(() => {
 				);
 
 				document.querySelector("#points").innerText = `${currentPoints} points`;
+				
 				document.querySelector("p.username").innerText = `${username.textContent}'s Bracket`;
+
+				const loggedInCheck = localStorage.getItem("loggedIn");
+				if(loggedInCheck !== null) {
+					if(loggedInCheck == username.id) {
+						document.querySelector("p.username").innerText = `Your Bracket`;
+						document.querySelector("p.username").style.color = "var(--purple)";
+					}
+				}
+
 				while(round > 0) {
 					previousRound();
 				}
@@ -360,12 +370,22 @@ activeScripts.push(() => {
 							if(gameValue.correct === true) {
 								teamElems[predictionIndex].parentElement.parentElement.classList.add("correct");
 								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
+
+								teamElems[overIndex].parentElement.parentElement.style.zIndex = 0;
 							}
 							else if(gameValue.correct === false) {
 								teamElems[predictionIndex].parentElement.parentElement.classList.add("incorrect");
 								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
 
+								teamElems[overIndex].parentElement.parentElement.style.zIndex = 0;
+
 								teamElems[predictionIndex].parentElement.parentElement.children[0].children[0].textContent = "x";
+							}
+							else {
+								teamElems[predictionIndex].parentElement.parentElement.classList.add("selected");
+								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
+
+								teamElems[overIndex].parentElement.parentElement.style.zIndex = 0;
 							}
 
 							teamElems[overIndex].parentElement.parentElement.className = "teamContainer";

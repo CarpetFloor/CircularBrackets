@@ -488,6 +488,9 @@ button:hover {
 	padding-left: 0.5em;
 	font-weight: bold;
 }
+.bracketView .bracket .roundContainer .round .game .selected .outline {
+	border-color: grey;
+}
 .bracketView .bracket .roundContainer .round .game .correct .outline {
 	border-color: #81c784;
 }
