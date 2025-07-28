@@ -239,9 +239,7 @@ activeScripts.push(() => {
 
 				const noticeContainer = document.querySelector("#loginNoticeContainer");
 				const createBracketButton = noticeContainer.querySelector("button");
-				if(createBracketButton !== null) {
-					noticeContainer.style.display = "none";
-				}
+				noticeContainer.style.display = "none";
 			}, 250);
 		}
 	}
@@ -257,8 +255,14 @@ activeScripts.push(() => {
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
 		document.querySelector(".leaderboard").innerHTML = "";
+
+		const leaderboardSorted = [...leaderboard];
+
+		leaderboardSorted.sort(function(a, b) {
+			return b.points - a.points;
+		});
 		
-		for(let user of leaderboard) {
+		for(let user of leaderboardSorted) {
 			const div = document.createElement("div");
 
 			const username = document.createElement("p");
