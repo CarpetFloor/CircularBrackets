@@ -16,7 +16,7 @@ const io = new Server(httpsServer);
 
 let playoffTeams = null;
 
-const bracketDeadline = new Date("July 21, 2025 00:00:00");
+const bracketDeadline = new Date("July 25, 2025 00:00:00");
 
 // add static files
 app.use(express.static(__dirname + "/Client"));

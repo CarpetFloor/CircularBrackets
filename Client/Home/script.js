@@ -256,6 +256,8 @@ activeScripts.push(() => {
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
+		document.querySelector(".leaderboard").innerHTML = "";
+		
 		for(let user of leaderboard) {
 			const div = document.createElement("div");
 
