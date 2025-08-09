@@ -254,8 +254,6 @@ activeScripts.push(() => {
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
-		console.log("leaderboard");
-		console.log(leaderboard);
 		document.querySelector(".leaderboard").innerHTML = "";
 
 		const leaderboardSorted = [...leaderboard];
@@ -301,6 +299,7 @@ activeScripts.push(() => {
 				document.querySelector("#points").innerText = `${currentPoints} points`;
 				
 				document.querySelector("p.username").innerText = `${username.textContent}'s Bracket`;
+				document.querySelector("p.username").style.color = "black";
 
 				const loggedInCheck = localStorage.getItem("loggedIn");
 				if(loggedInCheck !== null) {
@@ -372,6 +371,9 @@ activeScripts.push(() => {
 								teamElems[predictionIndex].parentElement.parentElement.style.zIndex = 1;
 
 								teamElems[overIndex].parentElement.parentElement.style.zIndex = 0;
+
+								// set points gained to correct value
+								teamElems[predictionIndex].parentElement.parentElement.querySelector(".pointsGained").innerText = `+${10 * Math.pow(2, roundIndex)}`;
 							}
 							else if(gameValue.correct === false) {
 								teamElems[predictionIndex].parentElement.parentElement.classList.add("incorrect");
