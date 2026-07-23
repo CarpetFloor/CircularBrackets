@@ -288,7 +288,8 @@ activeScripts.push(() => {
 						"send bracket", 
 						{
 							username: localStorage.getItem("loggedIn"), 
-							bracket: bracketData
+							bracket: bracketData,
+							reseed: creatingReseed
 						}
 					);
 
@@ -337,8 +338,7 @@ activeScripts.push(() => {
 		}
 
 		addMatchupListeners();
-
-		console.log(bracket);
+		
 		setTimeout(() => {
 			if(creatingReseed && Object.entries(bracket ?? {}).length > 0) {
 				document.querySelector("#reseedNotice").style.display = "flex";
@@ -369,8 +369,22 @@ activeScripts.push(() => {
 					}
 
 					++index;
-					if(index >= reseedRound) {
+					if(index == reseedRound - 1) {
 						break;
+					}
+				}
+
+				for(const reseedMatchup of reseedMatchups) {
+					const roundContainers = document.querySelectorAll(".roundContainer")[reseedRound - 1];
+					const games = roundContainers.querySelectorAll(".game");
+
+					for(const game of games) {
+						if(reseedMatchup.name.includes(game.querySelector(".title").innerText)) {
+							const labels = game.querySelectorAll("label");
+							
+							labels[0].innerText = reseedMatchup.team1;
+							labels[1].innerText = reseedMatchup.team2;
+						}
 					}
 				}
 			}

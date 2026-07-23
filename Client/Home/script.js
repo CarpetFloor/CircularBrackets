@@ -496,7 +496,8 @@ activeScripts.push(() => {
 				bracket = reseedData.bracket;
 				creatingReseed = true;
 				reseedRound = reseedData.round;
-				
+				reseedMatchups = reseedData.matchups;
+
 				const reseedContainer = document.querySelector("#reseedBracketDeadline");
 				reseedContainer.style.display = "flex";
 
@@ -506,7 +507,10 @@ activeScripts.push(() => {
 				const nowCheck = new Date();
 				const reseedDeadlineDiff = reseedDeadline - nowCheck;
 
-				if(reseedDeadlineDiff > 0) {
+				if(reseedData.alreadyCreated) {
+					reseedContainer.innerHTML += `<p style="text-align: center; font-weight: bold;">You have already created a re-seeded bracket</p>`;
+				}
+				else if(reseedDeadlineDiff > 0) {
 					reseedContainer.innerHTML += `<button id="createReseedBracketButton" class="simpleButtonHover">Create Re-Seeded Bracket</button>`;
 					document.querySelector("#createReseedBracketButton").style.width = "fit-content";
 					document.querySelector("#createReseedBracketButton").style.marginLeft = "auto";
@@ -519,15 +523,8 @@ activeScripts.push(() => {
 					);
 				}
 				else {
-					if(reseedData.alreadyCreated) {
-						reseedContainer.innerHTML += `<p>You have already created a re-seeded bracket</p>`;
-					}
-					else {
-						reseedContainer.innerHTML += `<p>You missed the deadline to create a re-seeded bracket</p>`;
-					}
+					reseedContainer.innerHTML += `<p style="text-align: center;">You missed the deadline to create a re-seeded bracket</p>`;
 				}
-
-				
 			}
 		});
 	});

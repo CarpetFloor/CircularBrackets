@@ -4,6 +4,7 @@ let bracketDeadline = null;
 let creatingReseed = false;
 let bracket = [];
 let reseedRound = -1;
+let reseedMatchups = null;
 
 class Page {
 	constructor(name, title, path, stylesheets, scripts) {
@@ -94,7 +95,6 @@ function loadPage(name) {
 
 					for(let script of activeScripts) {
 						script();
-						console.log(script);
 					}
 
 					document.body.style.backgroundColor = "white";

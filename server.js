@@ -2,7 +2,7 @@
  * If > 0, indicates that from that round (not 0-based index) beyond, the tournament has been re-seeded.
  * Allows players to re-pick rounds
  */
-const RESEED_ROUND = 2;
+const RESEED_ROUND = 3;
 // const BRACKET_DEADLINE = new Date("July 24, 2026 00:00:00");
 const BRACKET_DEADLINE = new Date("July 22, 2026 00:00:00");
 const RESEED_BRACKET_DEADLINE = new Date("July 31, 2026 00:00:00");
@@ -389,6 +389,7 @@ async function handleRequestLeaderboard(socket, username) {
 
     let alreadyCreatedReseed = false;
     let bracket = {};
+    let matchups = null;
 
     if((username ?? "").length > 0) {
         try {
@@ -398,6 +399,9 @@ async function handleRequestLeaderboard(socket, username) {
                 alreadyCreatedReseed = true;
             }
             bracket = fileData.bracket;
+            matchups = JSON.parse(
+                await fs.readFile("Data/Global/Results.json")
+            )["round" + RESEED_ROUND];
         }
         catch(error) {
             return;
@@ -409,7 +413,8 @@ async function handleRequestLeaderboard(socket, username) {
                 deadline: RESEED_BRACKET_DEADLINE,
                 round: RESEED_ROUND,
                 alreadyCreated: alreadyCreatedReseed,
-                bracket: bracket
+                bracket: bracket,
+                matchups: matchups
             });
         }
     }
@@ -436,6 +441,7 @@ async function handleSendBracket(socket, username, bracket) {
     try {
         let userData = JSON.parse(await fs.readFile(`Data/User/${username}.json`));
         userData.bracket = bracket;
+        userData.createdReeseed = true;
 
         await fs.writeFile(
             `Data/User/${username}.json`, 
