@@ -1,4 +1,5 @@
 activeScripts.push(() => {
+	let createdBracket = false;
 	const loggedInCheck = localStorage.getItem("loggedIn");
 	if(loggedInCheck !== null) {
 		document.querySelector("#accountHamburger").style.display = "none";
@@ -33,6 +34,8 @@ activeScripts.push(() => {
 				document.querySelector("#bracketDeadline").style.display = "none";
 			}
 		);
+
+		createdBracket = true;
 
 		document.title += " - Logged In";
 	}
@@ -250,7 +253,7 @@ activeScripts.push(() => {
 	}, 1000 * 30);
 	intervals.push(timeInterval);
 
-	socket.emit("request leaderboard");
+	socket.emit("request leaderboard", loggedInCheck);
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
@@ -486,6 +489,43 @@ activeScripts.push(() => {
 				nextRound();
 			}
 		);
+
+		socketListeners.push("send reseed data");
+		socket.on("send reseed data", (reseedData) => {
+			if (createdBracket) {
+				const reseedContainer = document.querySelector("#reseedBracketDeadline");
+				reseedContainer.style.display = "flex";
+
+				const reseedDeadline = new Date(reseedData.deadline);
+				reseedContainer.querySelector("#reseedDueBy").innerText += " " + (reseedDeadline.getMonth() + 1) + "/" + reseedDeadline.getDate();
+
+				const nowCheck = new Date();
+				const reseedDeadlineDiff = reseedDeadline - nowCheck;
+
+				if(reseedDeadlineDiff > 0) {
+					reseedContainer.innerHTML += `<button id="createReseedBracketButton" class="simpleButtonHover">Create Re-Seeded Bracket</button>`;
+					document.querySelector("#createReseedBracketButton").style.width = "fit-content";
+					document.querySelector("#createReseedBracketButton").style.marginLeft = "auto";
+					document.querySelector("#createReseedBracketButton").style.marginRight = "auto";
+					document.querySelector("#createReseedBracketButton").addEventListener(
+						"click", 
+						() => {
+							loadPage("create reseed bracket");
+						}
+					);
+				}
+				else {
+					if(reseedData.alreadyCreated) {
+						reseedContainer.innerHTML += `<p>You have already created a re-seeded bracket</p>`;
+					}
+					else {
+						reseedContainer.innerHTML += `<p>You missed the deadline to create a re-seeded bracket</p>`;
+					}
+				}
+
+				
+			}
+		});
 	});
 });
 

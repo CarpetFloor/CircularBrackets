@@ -251,7 +251,7 @@ button:hover {
 		margin-right: auto;
 	}
 }
-#bracketDeadline .heading {
+#bracketDeadline .heading, #reseedBracketDeadline .heading {
 	background-color: black;
 	color: white;
 	padding: 0.25em;
@@ -371,7 +371,7 @@ button:hover {
 .bracketView .username {
 	margin-top: 1em;
 }
-.bracketView #points {;
+.bracketView #points {
 	margin-top: 0.5em;
 	margin-bottom: 1em;
 }
@@ -464,7 +464,7 @@ button:hover {
 	flex-direction: row;
 	padding-right: 1.5em;
 	border: 2px solid var(--grey);
-	width: 12em;
+	width: 14em;
 	height: 2em;
 	align-items: center;
 	margin-bottom: -0.1em;

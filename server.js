@@ -1,6 +1,16 @@
+/**
+ * If > 0, indicates that from that round (not 0-based index) beyond, the tournament has been re-seeded.
+ * Allows players to re-pick rounds
+ */
+const RESEED_ROUND = 2;
+// const BRACKET_DEADLINE = new Date("July 24, 2026 00:00:00");
+const BRACKET_DEADLINE = new Date("July 22, 2026 00:00:00");
+const RESEED_BRACKET_DEADLINE = new Date("July 31, 2026 00:00:00");
+
 const express = require("express");
 const app = express();
-const https = require("https");
+const http = require("http");
+// const https = require("https");
 const { Server } = require("socket.io");
 
 const fs = require("fs").promises;
@@ -9,38 +19,20 @@ const path = require("path");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 
-const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
-const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
-const credentials = { key: privateKey, cert: certificate };
-const httpsServer = https.createServer(credentials, app);
-const io = new Server(httpsServer);
+// const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
+// const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
+// const credentials = { key: privateKey, cert: certificate };
 
-let playoffTeams = null;
+// const httpsServer = https.createServer(credentials, app);
+const server = http.createServer(app);
 
-const bracketDeadline = new Date("July 24, 2026 00:00:00");
+// const io = new Server(httpsServer);
+const io = new Server(server);
 
 // add static files
 app.use(express.static(__dirname + "/Client"));
 
-async function getKeyFile() {
-    try {
-        return await fs.readFile("Data/key.txt", "utf8");
-    }
-    catch(error) {
-        console.log((new Date()).toString());
-        console.log("\tERROR getting keyfile:");
-        console.log(`\t${error.message}`);
-
-        return null;
-    }
-}
-
 async function run() {
-
-const keyFile = await getKeyFile();
-const key = Buffer.from(keyFile, "hex");
-const algorithm = "aes-256-cbc";
-const iv = crypto.randomBytes(16);
 
 async function encrypt(text) {
     const encrypted = await bcrypt.hash(text, 10);
@@ -166,7 +158,8 @@ async function createAccount(usernameInput, passwordInput, socket) {
         username: usernameInput, 
         password: encryptedPassword, 
         points: 0, 
-        bracket: null
+        bracket: null,
+        createdReseed: false
     };
     const file = JSON.stringify(fileData);
 
@@ -389,10 +382,32 @@ async function checkForResultsUpdate() {
     }
 }
 
-async function handleRequestLeaderboard(socket) {
+async function handleRequestLeaderboard(socket, username) {
     await checkForResultsUpdate();
 
     socket.emit("send leaderboard", leaderboard);
+
+    let alreadyCreatedReseed = false;
+
+    try {
+        const file = await fs.readFile(`Data/User/${username}.json`);
+        const fileData = JSON.parse(file);
+        if(fileData?.createdReeseed ?? false) {
+            alreadyCreatedReseed = true;
+        }
+    }
+    catch(error) {
+        return;
+    }
+
+    // check for re-seeding
+    if((RESEED_ROUND ?? 0) > 0) {
+        socket.emit("send reseed data", {
+            deadline: RESEED_BRACKET_DEADLINE,
+            round: RESEED_ROUND,
+            alreadyCreated: alreadyCreatedReseed
+        });
+    }
 }
 
 async function handleGetMatchups(socket) {
@@ -576,7 +591,7 @@ await getLeaderboard();
 
 // handle users
 io.on("connection", (socket) => {
-    socket.emit("send bracket deadline", bracketDeadline);
+    socket.emit("send bracket deadline", BRACKET_DEADLINE);
 
     socket.on("check logged in", (localStorageValue) => {
         handleCheckLoggedIn(socket, localStorageValue);
@@ -591,7 +606,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("request leaderboard", () => {
-        handleRequestLeaderboard(socket);
+        handleRequestLeaderboard(socket, username);
     });
 
     socket.on("get matchups", () => {
@@ -616,7 +631,10 @@ io.on("connection", (socket) => {
 });
 
 // start server
-httpsServer.listen(443, () => {console.log("Server running at https://www.circularbrackets.com");});
+// httpsServer.listen(443, () => {console.log("Server running at https://www.circularbrackets.com");});
+server.listen(3000, () => {
+  console.log("server started on http://localhost:3000");
+});
 }
 
 run();
