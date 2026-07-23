@@ -284,10 +284,12 @@ activeScripts.push(() => {
 
 					document.querySelector("#submitBracketButton").innerText = "Submitted";
 
+					console.log("submitting with", localStorage.getItem("loggedIn"), bracket, creatingReseed);
+
 					socket.emit(
 						"send bracket", 
 						{
-							username: localStorage.getItem("loggedIn"), 
+							a: localStorage.getItem("loggedIn"), 
 							bracket: bracketData,
 							reseed: creatingReseed
 						}

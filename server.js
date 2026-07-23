@@ -1,11 +1,6 @@
-/**
- * If > 0, indicates that from that round (not 0-based index) beyond, the tournament has been re-seeded.
- * Allows players to re-pick rounds
- */
-const RESEED_ROUND = 3;
-// const BRACKET_DEADLINE = new Date("July 24, 2026 00:00:00");
-const BRACKET_DEADLINE = new Date("July 22, 2026 00:00:00");
-const RESEED_BRACKET_DEADLINE = new Date("July 31, 2026 00:00:00");
+const BRACKET_DEADLINE = new Date("July 24, 2026 17:30:00");
+const RESEED_ROUND = 0;
+const RESEED_BRACKET_DEADLINE = null;
 
 const express = require("express");
 const app = express();
@@ -37,20 +32,6 @@ async function run() {
 async function encrypt(text) {
     const encrypted = await bcrypt.hash(text, 10);
     return encrypted;
-}
-
-function decrypt(text) {
-    let iv = Buffer.from(text.iv, "hex");
-    let encryptedText = Buffer.from(text.encryptedData, "hex");
-    let decipher = crypto.createDecipheriv(
-        algorithm, 
-        Buffer.from(key), 
-        iv
-    );
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    
-    return decrypted.toString();
 }
 
 const validationSettings = {
@@ -152,11 +133,48 @@ async function checkForUsernameNotTaken(username) {
     }
 }
 
+async function generateA() {
+    const a = crypto.randomBytes(32).toString("hex");
+    return a;
+}
+
+async function getUsernameFromA(a) {
+    const directory = path.join(__dirname, "/Data/User");
+
+    try {
+        const files = await fs.readdir(directory);
+
+        const existingUsers = files
+            .map(fileName => {
+                return path.join(directory, fileName);
+            })
+            .filter(isFile)
+            .map(file => {
+                const baseName = path.basename(file);
+                return path.parse(baseName).name;
+            })
+        ;
+
+        for(const username of existingUsers) {
+            const fileRead = await fs.readFile(`Data/User/${username}.json`);
+            const fileData = JSON.parse(fileRead);
+            if(fileData.a == a) {
+                return fileData.username;
+            }
+        }
+    }
+    catch(error) {
+        return null;
+    }
+}
+
 async function createAccount(usernameInput, passwordInput, socket) {
     const encryptedPassword = await encrypt(passwordInput);
+    const updatedA = await generateA();
     const fileData = {
         username: usernameInput, 
         password: encryptedPassword, 
+        a: updatedA,
         points: 0, 
         bracket: null,
         createdReseed: false
@@ -172,7 +190,7 @@ async function createAccount(usernameInput, passwordInput, socket) {
 
 	await getLeaderboard();
 
-        socket.emit("signup success");
+        socket.emit("signup success", updatedA);
     }
     catch(error) {
         console.log((new Date()).toString());
@@ -231,7 +249,17 @@ async function handleRequestLogin(socket, inputs) {
             
             const match = await bcrypt.compare(inputs.password, fileData.password);
             if(match) {
-                socket.emit("login success");
+                const updatedA = await generateA();
+                fileData.a = updatedA;
+                const updatedFile = JSON.stringify(fileData);
+
+                await fs.writeFile(
+                    `Data/User/${inputs.username}.json`, 
+                    updatedFile, 
+                    "utf8"
+                );
+
+                socket.emit("login success", updatedA);
             }
             else {
                 socket.emit("login failed", "incorrect password");
@@ -258,15 +286,15 @@ async function handleCheckLoggedIn(socket, localStorageValue) {
         return;
     }
 
-    const usernameNotTakenCheck = await checkForUsernameNotTaken(
-        localStorageValue
-    );
+    const username = await getUsernameFromA(localStorageValue);
+
+    const usernameNotTakenCheck = await checkForUsernameNotTaken(username);
 
     if(
         !(usernameNotTakenCheck.result) && 
         (usernameNotTakenCheck.reason == "username taken")
     ) {
-        socket.emit("logged in");
+        socket.emit("logged in", username);
         return;
     }
 
@@ -382,7 +410,7 @@ async function checkForResultsUpdate() {
     }
 }
 
-async function handleRequestLeaderboard(socket, username) {
+async function handleRequestLeaderboard(socket, a) {
     await checkForResultsUpdate();
 
     socket.emit("send leaderboard", leaderboard);
@@ -390,6 +418,8 @@ async function handleRequestLeaderboard(socket, username) {
     let alreadyCreatedReseed = false;
     let bracket = {};
     let matchups = null;
+
+    const username = await getUsernameFromA(a);
 
     if((username ?? "").length > 0) {
         try {
@@ -408,9 +438,9 @@ async function handleRequestLeaderboard(socket, username) {
         }
 
         // check for re-seeding
-        if((RESEED_ROUND ?? 0) > 0) {
+        if((RESEED_ROUND ?? 0) > 0 && (RESEED_BRACKET_DEADLINE != null)) {
             socket.emit("send reseed data", {
-                deadline: RESEED_BRACKET_DEADLINE,
+                deadline: RESEED_BRACKET_DEADLINE ?? null,
                 round: RESEED_ROUND,
                 alreadyCreated: alreadyCreatedReseed,
                 bracket: bracket,
@@ -437,11 +467,14 @@ async function handleGetMatchups(socket) {
     }
 }
 
-async function handleSendBracket(socket, username, bracket) {
+async function handleSendBracket(socket, a, bracket, reseed) {
     try {
+        const username = await getUsernameFromA(a);
+        console.log("sending bracket", a, username, handleRequestBracketUserData, reseed);
+
         let userData = JSON.parse(await fs.readFile(`Data/User/${username}.json`));
         userData.bracket = bracket;
-        userData.createdReeseed = true;
+        userData.createdReeseed = reseed;
 
         await fs.writeFile(
             `Data/User/${username}.json`, 
@@ -460,8 +493,9 @@ async function handleSendBracket(socket, username, bracket) {
     }
 }
 
-async function handleCheckForBracket(socket, username) {
+async function handleCheckForBracket(socket, a) {
     try {
+        const username = await getUsernameFromA(a);
         const userData = JSON.parse(await fs.readFile(`Data/User/${username}.json`));
 
         socket.emit(
@@ -514,8 +548,9 @@ async function handleRequestBracketUserData(socket, username) {
     }
 }
 
-async function handleRequestBracketExistCheck(socket, username) {
+async function handleRequestBracketExistCheck(socket, a) {
     try {
+        const username = await getUsernameFromA(a);
         const directory = path.join(__dirname, "/Data/User");
         const files = await fs.readdir(directory);
 
@@ -597,6 +632,11 @@ async function getLeaderboard() {
     }
 }
 
+async function handleRequestUsername(socket, a) {
+    const username = await getUsernameFromA(a);
+    socket.emit("send username", username);
+}
+
 let leaderboard = [];
 await getLeaderboard();
 
@@ -616,8 +656,12 @@ io.on("connection", (socket) => {
         handleRequestLogin(socket, inputs);
     });
 
-    socket.on("request leaderboard", (username) => {
-        handleRequestLeaderboard(socket, username);
+    socket.on("request logout", (a) => {
+        handleRequestLogout(socket, a);
+    })
+
+    socket.on("request leaderboard", (a) => {
+        handleRequestLeaderboard(socket, a);
     });
 
     socket.on("get matchups", () => {
@@ -625,19 +669,20 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send bracket", (data) => {
-        handleSendBracket(socket, data.username, data.bracket);
+        console.log("here send bracket");
+        handleSendBracket(socket, data.a, data.bracket, data.reseed);
     });
 
-    socket.on("check for bracket", (username) => {
-        handleCheckForBracket(socket, username);
+    socket.on("check for bracket", (a) => {
+        handleCheckForBracket(socket, a);
     });
 
     socket.on("request bracket user data", (username) => {
         handleRequestBracketUserData(socket, username);
     });
 
-    socket.on("request bracket exist check", (username) => {
-        handleRequestBracketExistCheck(socket, username);
+    socket.on("request bracket exist check", (a) => {
+        handleRequestBracketExistCheck(socket, a);
     })
 });
 

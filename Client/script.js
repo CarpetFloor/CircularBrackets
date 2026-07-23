@@ -1,5 +1,7 @@
 let socket = io();
 
+let username = "";
+
 let bracketDeadline = null;
 let creatingReseed = false;
 let bracket = [];
@@ -152,7 +154,14 @@ window.onload = () => {
 			const loggedInCheck = localStorage.getItem("loggedIn");
 			socket.emit("check logged in", loggedInCheck);
 
-			loadPage("home");
+			socket.on("logged in", (usernameReceived) => {
+				username = usernameReceived;
+				loadPage("home");
+			});
+
+			socket.on("not logged in", () => {
+				loadPage("home");
+			});
 		});
 	});
 }

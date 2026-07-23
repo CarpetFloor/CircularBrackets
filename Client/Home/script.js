@@ -5,12 +5,10 @@ activeScripts.push(() => {
 		document.querySelector("#accountHamburger").style.display = "none";
 		document.querySelector("#logoutButton").style.display = "flex";
 
-		document.querySelector("#welcomeMessage").style.display = "flex";
-		document.querySelector("#welcomeMessage").innerText += ` ${loggedInCheck}`;
-
 		document.querySelector("#logoutButton").addEventListener(
 			"click", 
 			() => {
+				socket.emit("logout", loggedInCheck);
 				localStorage.removeItem("loggedIn");
 				window.location.reload();
 			}
@@ -23,6 +21,9 @@ activeScripts.push(() => {
 				loadPage("create bracket");
 			}
 		);
+
+		document.querySelector("#welcomeMessage").style.display = "flex";
+		document.querySelector("#welcomeMessage").innerText += ` ${username}`;
 		
 		socket.emit("request bracket exist check", loggedInCheck);
 
@@ -155,8 +156,8 @@ activeScripts.push(() => {
 	});
 
 	socketListeners.push("signup success");
-	socket.on("signup success", () => {
-		localStorage.setItem("loggedIn", usernameEntered);
+	socket.on("signup success", (a) => {
+		localStorage.setItem("loggedIn", a);
 		
 		window.location.reload();
 	});
@@ -207,8 +208,8 @@ activeScripts.push(() => {
 	});
 
 	socketListeners.push("login success");
-	socket.on("login success", () => {
-		localStorage.setItem("loggedIn", usernameEntered);
+	socket.on("login success", (a) => {
+		localStorage.setItem("loggedIn", a);
 		
 		window.location.reload();
 	});
@@ -268,21 +269,19 @@ activeScripts.push(() => {
 		for(let user of leaderboardSorted) {
 			const div = document.createElement("div");
 
-			const username = document.createElement("p");
-			username.className = "username";
-			username.innerText = user.username;
-			username.id = user.username;
+			const usernameElement = document.createElement("p");
+			usernameElement.className = "username";
+			usernameElement.innerText = user.username;
+			usernameElement.id = user.username;
 
 			const loggedInCheck = localStorage.getItem("loggedIn");
 
-			if(loggedInCheck !== null) {
-				if(user.username == loggedInCheck) {
-					username.innerText = "You";
-					username.style.color = "var(--purple)";
-				}
+			if(user.username == username) {
+				usernameElement.innerText = "You";
+				usernameElement.style.color = "var(--purple)";
 			}
 			
-			div.appendChild(username);
+			div.appendChild(usernameElement);
 
 			const points = document.createElement("p");
 			points.className = "points";
@@ -296,17 +295,17 @@ activeScripts.push(() => {
 			div.addEventListener("click", () => {
 				socket.emit(
 					"request bracket user data", 
-					username.id
+					usernameElement.id
 				);
 
 				document.querySelector("#points").innerText = `${currentPoints} points`;
 				
-				document.querySelector("p.username").innerText = `${username.textContent}'s Bracket`;
+				document.querySelector("p.username").innerText = `${usernameElement.textContent}'s Bracket`;
 				document.querySelector("p.username").style.color = "black";
 
 				const loggedInCheck = localStorage.getItem("loggedIn");
 				if(loggedInCheck !== null) {
-					if(loggedInCheck == username.id) {
+					if(loggedInCheck == usernameElement.id) {
 						document.querySelector("p.username").innerText = `Your Bracket`;
 						document.querySelector("p.username").style.color = "var(--purple)";
 					}
