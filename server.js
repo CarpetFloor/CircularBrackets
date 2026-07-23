@@ -7,6 +7,7 @@ const fs = require("fs").promises;
 const fsSync = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 
 const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
 const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
@@ -16,7 +17,7 @@ const io = new Server(httpsServer);
 
 let playoffTeams = null;
 
-const bracketDeadline = new Date("July 25, 2025 00:00:00");
+const bracketDeadline = new Date("July 24, 2026 00:00:00");
 
 // add static files
 app.use(express.static(__dirname + "/Client"));
@@ -41,19 +42,9 @@ const key = Buffer.from(keyFile, "hex");
 const algorithm = "aes-256-cbc";
 const iv = crypto.randomBytes(16);
 
-function encrypt(text) {
-    let cipher = crypto.createCipheriv(
-        algorithm, 
-        Buffer.from(key), 
-        iv
-    );
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    
-    return {
-        iv: iv.toString("hex"), 
-        encryptedData: encrypted.toString("hex")
-    };
+async function encrypt(text) {
+    const encrypted = await bcrypt.hash(text, 10);
+    return encrypted;
 }
 
 function decrypt(text) {
@@ -170,9 +161,10 @@ async function checkForUsernameNotTaken(username) {
 }
 
 async function createAccount(usernameInput, passwordInput, socket) {
+    const encryptedPassword = await encrypt(passwordInput);
     const fileData = {
         username: usernameInput, 
-        password: encrypt(passwordInput), 
+        password: encryptedPassword, 
         points: 0, 
         bracket: null
     };
