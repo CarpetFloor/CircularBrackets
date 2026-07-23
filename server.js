@@ -14,15 +14,15 @@ const path = require("path");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 
-// const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
-// const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
-// const credentials = { key: privateKey, cert: certificate };
+const privateKey = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/privkey.pem", "utf8");
+const certificate = fsSync.readFileSync("/etc/letsencrypt/live/circularbrackets.com/fullchain.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 
-// const httpsServer = https.createServer(credentials, app);
-const server = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+// const server = http.createServer(app);
 
-// const io = new Server(httpsServer);
-const io = new Server(server);
+const io = new Server(httpsServer);
+// const io = new Server(server);
 
 // add static files
 app.use(express.static(__dirname + "/Client"));
@@ -687,10 +687,10 @@ io.on("connection", (socket) => {
 });
 
 // start server
-// httpsServer.listen(443, () => {console.log("Server running at https://www.circularbrackets.com");});
-server.listen(3000, () => {
-  console.log("server started on http://localhost:3000");
-});
+httpsServer.listen(443, () => {console.log("Server running at https://www.circularbrackets.com");});
+// server.listen(3000, () => {
+//   console.log("server started on http://localhost:3000");
+// });
 }
 
 run();
