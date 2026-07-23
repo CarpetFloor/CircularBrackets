@@ -23,7 +23,7 @@ activeScripts.push(() => {
 				loadPage("create bracket");
 			}
 		);
-
+		
 		socket.emit("request bracket exist check", loggedInCheck);
 
 		socketListeners.push("send bracket exists");
@@ -253,7 +253,7 @@ activeScripts.push(() => {
 	}, 1000 * 30);
 	intervals.push(timeInterval);
 
-	socket.emit("request leaderboard", loggedInCheck);
+	socket.emit("request leaderboard", loggedInCheck ?? "");
 
 	socketListeners.push("send leaderboard");
 	socket.on("send leaderboard", (leaderboard) => {
@@ -493,6 +493,10 @@ activeScripts.push(() => {
 		socketListeners.push("send reseed data");
 		socket.on("send reseed data", (reseedData) => {
 			if (createdBracket) {
+				bracket = reseedData.bracket;
+				creatingReseed = true;
+				reseedRound = reseedData.round;
+				
 				const reseedContainer = document.querySelector("#reseedBracketDeadline");
 				reseedContainer.style.display = "flex";
 
@@ -510,7 +514,7 @@ activeScripts.push(() => {
 					document.querySelector("#createReseedBracketButton").addEventListener(
 						"click", 
 						() => {
-							loadPage("create reseed bracket");
+							loadPage("create bracket");
 						}
 					);
 				}

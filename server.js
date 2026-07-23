@@ -388,25 +388,30 @@ async function handleRequestLeaderboard(socket, username) {
     socket.emit("send leaderboard", leaderboard);
 
     let alreadyCreatedReseed = false;
+    let bracket = {};
 
-    try {
-        const file = await fs.readFile(`Data/User/${username}.json`);
-        const fileData = JSON.parse(file);
-        if(fileData?.createdReeseed ?? false) {
-            alreadyCreatedReseed = true;
+    if((username ?? "").length > 0) {
+        try {
+            const file = await fs.readFile(`Data/User/${username}.json`);
+            const fileData = JSON.parse(file);
+            if(fileData?.createdReeseed ?? false) {
+                alreadyCreatedReseed = true;
+            }
+            bracket = fileData.bracket;
         }
-    }
-    catch(error) {
-        return;
-    }
+        catch(error) {
+            return;
+        }
 
-    // check for re-seeding
-    if((RESEED_ROUND ?? 0) > 0) {
-        socket.emit("send reseed data", {
-            deadline: RESEED_BRACKET_DEADLINE,
-            round: RESEED_ROUND,
-            alreadyCreated: alreadyCreatedReseed
-        });
+        // check for re-seeding
+        if((RESEED_ROUND ?? 0) > 0) {
+            socket.emit("send reseed data", {
+                deadline: RESEED_BRACKET_DEADLINE,
+                round: RESEED_ROUND,
+                alreadyCreated: alreadyCreatedReseed,
+                bracket: bracket
+            });
+        }
     }
 }
 
@@ -605,7 +610,7 @@ io.on("connection", (socket) => {
         handleRequestLogin(socket, inputs);
     });
 
-    socket.on("request leaderboard", () => {
+    socket.on("request leaderboard", (username) => {
         handleRequestLeaderboard(socket, username);
     });
 

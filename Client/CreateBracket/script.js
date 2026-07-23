@@ -337,6 +337,44 @@ activeScripts.push(() => {
 		}
 
 		addMatchupListeners();
+
+		console.log(bracket);
+		setTimeout(() => {
+			if(creatingReseed && Object.entries(bracket ?? {}).length > 0) {
+				document.querySelector("#reseedNotice").style.display = "flex";
+				const roundContainers = document.querySelectorAll(".roundContainer");
+				
+				let index = 0;
+				for(const [key, value] of Object.entries(bracket ?? {})) {
+					for(const predictedGame of value) {
+						const games = roundContainers[index].querySelectorAll(".game");
+
+						for(const game of games) {
+							if(predictedGame.name.includes(game.querySelector(".title").innerText)) {
+								const teamSelects = game.querySelectorAll(".teamSelect");
+								const labels = game.querySelectorAll("label");
+								const inputs = game.querySelectorAll("input");
+								
+								teamSelects[0].style.backgroundColor = "rgb(215,215,215)";
+								labels[0].innerText = predictedGame.prediction;
+								inputs[0].checked = true;
+								inputs[0].disabled = true;
+								
+								teamSelects[1].style.backgroundColor = "rgb(215,215,215)";
+								labels[1].innerText = predictedGame.over;
+								inputs[1].checked = false;
+								inputs[1].disabled = true;
+							}
+						}
+					}
+
+					++index;
+					if(index >= reseedRound) {
+						break;
+					}
+				}
+			}
+		}, 250);
 	});
 
 	document.querySelector("#goBackButton").addEventListener(

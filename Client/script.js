@@ -1,6 +1,9 @@
 let socket = io();
 
 let bracketDeadline = null;
+let creatingReseed = false;
+let bracket = [];
+let reseedRound = -1;
 
 class Page {
 	constructor(name, title, path, stylesheets, scripts) {
@@ -27,7 +30,7 @@ const pages = [
 		"/CreateBracket/index.html", 
 		["/CreateBracket/styles.css"], 
 		["/CreateBracket/script.js"]
-	)
+	),
 ];
 
 let content = null;
