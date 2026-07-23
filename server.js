@@ -234,12 +234,10 @@ async function handleRequestLogin(socket, inputs) {
     ) {
         try {
             const file = await fs.readFile(`Data/User/${inputs.username}.json`);
-            
             const fileData = JSON.parse(file);
-            const passwordCheck = fileData.password;
-            const decrypted = decrypt(passwordCheck);
-
-            if(decrypted == inputs.password) {
+            
+            const match = await bcrypt.compare(inputs.password, fileData.password);
+            if(match) {
                 socket.emit("login success");
             }
             else {
